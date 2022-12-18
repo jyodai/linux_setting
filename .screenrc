@@ -1,0 +1,34 @@
+autodetach on
+bell_msg "^G"
+defutf8 on
+defkanji utf-8
+defencoding utf-8
+encoding utf-8 utf-8
+defscrollback 10000
+startup_message off
+vbell off
+bind n screen
+bind h prev
+bind j next
+bind l windowlist
+hardcopydir /tmp
+
+termcapinfo xterm* ti@:te@
+hardstatus alwayslastline "%{= kw} %-w%{=bu dr}%n %t%{-}%+w %= %{=b .b}%y/%m/%d %{=b .m}%c:%s"
+
+hardstatus alwayslastline "[%02c:%02s] %n"
+shelltitle "bash"
+hardstatus off
+escape ^Tt
+altscreen on
+screen 9
+screen 8
+screen 7
+screen 6
+screen 5
+screen 4
+screen 3
+screen 2
+screen 1
+screen 0
+select 1

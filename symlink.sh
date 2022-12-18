@@ -9,3 +9,7 @@ fi
 if [ ! -L $HOME/.vim/plugin/ddc.vim ]; then
     ln -s $HOME/linux_setting/.vim/plugin/ddc.vim $HOME/.vim/plugin/ddc.vim
 fi
+
+if [ ! -L $HOME/.screenrc ]; then
+    ln -s $HOME/linux_setting/.screenrc $HOME/.screenrc
+fi
