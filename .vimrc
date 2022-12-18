@@ -265,6 +265,10 @@ augroup vimrc-filetype
 
 	autocmd BufNewFile,BufRead *.vim set filetype=vim
 	autocmd FileType vim setlocal expandtab tabstop=4 softtabstop=4 shiftwidth=4
+
+	" shだったらインデント幅が4
+	autocmd BufNewFile,BufRead *.sh set filetype=vim
+	autocmd FileType sh setlocal expandtab tabstop=4 softtabstop=4 shiftwidth=4
 augroup END
 
 
