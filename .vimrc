@@ -299,4 +299,6 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""
 
 
-source ~/.vim/project/*.vim
+if system('ls ~/.vim/project/') != ''
+    source ~/.vim/project/*.vim
+endif
