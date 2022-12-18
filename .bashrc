@@ -6,7 +6,7 @@ PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 # composerをパスに追加
 PATH="$HOME/.config/composer/vendor/bin:$PATH"
 # denoをパスに追加
-export DENO_INSTALL="~/.deno"
+export DENO_INSTALL="$HOME/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
 
 # alias
