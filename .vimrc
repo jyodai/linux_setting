@@ -213,12 +213,17 @@ set fenc=utf-8
 " Beep音をオフ
 set visualbell t_vb=
 
-"補完"
+"補完
 inoremap { {}<LEFT>
 inoremap [ []<LEFT>
 inoremap ( ()<LEFT>
 inoremap " ""<LEFT>
 inoremap ' ''<LEFT>
+
+" インデント
+set tabstop=4
+set expandtab
+set shiftwidth=4
 
 """"""""""""""""""""""""""""""""""""""""""
 """"""""""""" ファイルの設定 """""""""""""
