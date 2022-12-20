@@ -1,0 +1,16 @@
+
+[include]
+    path = ./.env
+[user]
+    name  = $GITHUB_USER
+    email = $GITHUB_MAIL
+
+[core]
+    editor   = vim
+    autocrlf = input
+
+[diff]
+    tool = vimdiff
+
+[difftool]
+    prompt = false

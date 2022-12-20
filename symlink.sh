@@ -13,3 +13,7 @@ fi
 if [ ! -L $HOME/.screenrc ]; then
     ln -s $HOME/linux_setting/.screenrc $HOME/.screenrc
 fi
+
+if [ ! -L $HOME/.gitconfig ]; then
+    ln -s $HOME/linux_setting/.gitconfig $HOME/.gitconfig
+fi
