@@ -1,6 +1,6 @@
 
 [include]
-    path = ./.env
+    path = $HOME/.env
 [user]
     name  = $GITHUB_USER
     email = $GITHUB_MAIL

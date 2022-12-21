@@ -1,3 +1,7 @@
+if [ ! -L $HOME/.env ]; then
+    ln -s $HOME/linux_setting/.env $HOME/.env
+fi
+
 if [ ! -d $HOME/.vim/plugin ]; then
     mkdir $HOME/.vim/plugin
 fi
