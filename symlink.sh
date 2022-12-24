@@ -21,3 +21,7 @@ fi
 if [ ! -L $HOME/.gitconfig ]; then
     ln -s $HOME/linux_setting/.gitconfig $HOME/.gitconfig
 fi
+
+if [ ! -L $HOME/.gitconfig.user ]; then
+    ln -s $HOME/linux_setting/.gitconfig.user $HOME/.gitconfig.user
+fi
