@@ -13,14 +13,14 @@ main() {
 
 changeCompanyUser() {
     echo "change company user : $GITHUB_COMPANY_USER"
-    sed -i "s/\(GITHUB_USER=\).*$/\1$GITHUB_COMPANY_USER/" $SETTING_PATH/.env
-    sed -i "s/\(GITHUB_MAIL=\).*$/\1$GITHUB_COMPANY_MAIL/" $SETTING_PATH/.env
+    git config --global user.name $GITHUB_COMPANY_USER
+    git config --global user.email $GITHUB_COMPANY_MAIL
 }
 
 changePrivateUser() {
     echo "change private user : $GITHUB_PRIVATE_USER"
-    sed -i "s/\(GITHUB_USER=\).*$/\1$GITHUB_PRIVATE_USER/" $SETTING_PATH/.env
-    sed -i "s/\(GITHUB_MAIL=\).*$/\1$GITHUB_PRIVATE_MAIL/" $SETTING_PATH/.env
+    git config --global user.name $GITHUB_PRIVATE_USER
+    git config --global user.email $GITHUB_PRIVATE_MAIL
 }
 
 
