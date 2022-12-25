@@ -1,27 +1,31 @@
-if [ ! -L $HOME/.env ]; then
-    ln -s $HOME/linux_setting/.env $HOME/.env
-fi
+#!/bin/bash
 
-if [ ! -d $HOME/.vim/plugin ]; then
-    mkdir $HOME/.vim/plugin
-fi
+filePaths=(
+    ".env"
+    ".vimrc"
+    ".vim/plugin/ddc.vim"
+    ".screenrc"
+    ".gitconfig"
+    ".gitconfig.user"
+)
 
-if [ ! -L $HOME/.vimrc ]; then
-    ln -s $HOME/linux_setting/.vimrc $HOME/.vimrc
-fi
+for filePath in "${filePaths[@]}"
+do
+    if [ ! -L $HOME/"$filePath" ]; then
+        echo "symlink : $HOME/$filePath"
+        ln -s $HOME/linux_setting/"$filePath" $HOME/"$filePath"
+    fi
+done
 
-if [ ! -L $HOME/.vim/plugin/ddc.vim ]; then
-    ln -s $HOME/linux_setting/.vim/plugin/ddc.vim $HOME/.vim/plugin/ddc.vim
-fi
+dirPaths=(
+    ".vim/plugin"
+)
 
-if [ ! -L $HOME/.screenrc ]; then
-    ln -s $HOME/linux_setting/.screenrc $HOME/.screenrc
-fi
+for dirPath in "${dirPaths[@]}"
+do
+    if [ ! -d $HOME/"$dirPath" ]; then
+        echo "mkdir : $HOME/$dirPath"
+        mkdir $HOME/"$dirPath"
+    fi
+done
 
-if [ ! -L $HOME/.gitconfig ]; then
-    ln -s $HOME/linux_setting/.gitconfig $HOME/.gitconfig
-fi
-
-if [ ! -L $HOME/.gitconfig.user ]; then
-    ln -s $HOME/linux_setting/.gitconfig.user $HOME/.gitconfig.user
-fi
