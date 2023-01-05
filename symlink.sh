@@ -17,15 +17,3 @@ do
     fi
 done
 
-dirPaths=(
-    ".vim/plugin"
-)
-
-for dirPath in "${dirPaths[@]}"
-do
-    if [ ! -d $HOME/"$dirPath" ]; then
-        echo "mkdir : $HOME/$dirPath"
-        mkdir $HOME/"$dirPath"
-    fi
-done
-
