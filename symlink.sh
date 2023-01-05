@@ -7,6 +7,7 @@ filePaths=(
     ".screenrc"
     ".gitconfig"
     ".gitconfig.user"
+    ".bash_aliases"
 )
 
 main() {
