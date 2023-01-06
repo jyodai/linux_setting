@@ -3,7 +3,7 @@
 filePaths=(
     ".env"
     ".vimrc"
-    ".vim/plugin/ddc.vim"
+    ".vim/plugin"
     ".screenrc"
     ".gitconfig"
     ".gitconfig.user"
