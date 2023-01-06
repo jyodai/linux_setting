@@ -1,3 +1,4 @@
 .env
 .gitconfig.user
 *.swp
+.vim/project

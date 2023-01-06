@@ -2,11 +2,11 @@
 
 . $HOME/.env
 
-add-apt-repository ppa:jonathonf/vim
-apt update
-apt install vim
-
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+#add-apt-repository ppa:jonathonf/vim
+#apt update
+#apt install vim
+#
+#curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 dirPaths=(
     ".vim/plugged"
@@ -20,4 +20,4 @@ do
     fi
 done
 
-git submodule add $VIM_PROJECT $SETTING_PATH/.vim/project
+git clone $VIM_PROJECT $SETTING_PATH/.vim/project
