@@ -38,7 +38,6 @@ execSymlink() {
         ln -s $HOME/linux_setting/"$filePath" $HOME/"$filePath"
 
         if [ $filePath == '.bash_aliases' ]; then
-            echo 'addBashCode'
             addBashCode
         fi
     done
