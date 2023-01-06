@@ -36,7 +36,26 @@ execSymlink() {
 
         echo "symlink : $HOME/$filePath"
         ln -s $HOME/linux_setting/"$filePath" $HOME/"$filePath"
+
+        if [ $filePath == '.bash_aliases' ]; then
+            echo 'addBashCode'
+            addBashCode
+        fi
     done
+}
+
+addBashCode() {
+    bashrc=`cat $HOME/.bashrc`
+    if [[ "$bashrc" == *bash_aliases* ]]; then
+        return
+    fi
+
+        code="
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+"
+    echo "$code" >> $HOME/'.bashrc'
 }
 
 execUnlink() {
