@@ -1,11 +1,9 @@
 #!/bin/bash
 
 main() {
-    echo '######E############################'
-    echo 'createExample.shを実行します'
-    echo '###################################'
-
+    echo ""
     createFile
+    echo ""
 }
 
 createFile() {

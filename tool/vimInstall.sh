@@ -3,13 +3,11 @@
 main() {
     . $HOME/.env
 
-    echo '######E############################'
-    echo 'vimInstall.shを実行します'
-    echo '###################################'
-
+    echo ""
     updateVim
     installPlug
     setProject
+    echo ""
 }
 
 updateVim() {

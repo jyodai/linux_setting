@@ -12,10 +12,7 @@ filePaths=(
 )
 
 main() {
-    echo '######E############################'
-    echo 'symlink.shを実行します'
-    echo '###################################'
-
+    echo ""
     case "$1" in
       "u")
         execUnlink
@@ -23,6 +20,7 @@ main() {
       *)
         execSymlink
     esac
+    echo ""
 }
 
 execSymlink() {
