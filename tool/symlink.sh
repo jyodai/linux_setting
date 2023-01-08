@@ -60,6 +60,7 @@ if [ -f ~/.bash_aliases ]; then
 fi
 "
     echo "$code" >> $HOME/'.bashrc'
+    source . ~/.bashrc
 }
 
 execUnlink() {
