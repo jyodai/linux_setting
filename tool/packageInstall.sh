@@ -1,6 +1,10 @@
 #!/bin/bash
 
 main() {
+    echo '######E############################'
+    echo 'packageInstall.shを実行します'
+    echo '###################################'
+
     installPackages
 }
 

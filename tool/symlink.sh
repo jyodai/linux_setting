@@ -12,6 +12,10 @@ filePaths=(
 )
 
 main() {
+    echo '######E############################'
+    echo 'symlink.shを実行します'
+    echo '###################################'
+
     case "$1" in
       "u")
         execUnlink
