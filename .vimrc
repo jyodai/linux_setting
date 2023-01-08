@@ -278,6 +278,10 @@ augroup vimrc-filetype
 	" cだったらインデント幅が4
 	autocmd BufNewFile,BufRead *.c set filetype=vim
 	autocmd FileType c setlocal expandtab tabstop=4 softtabstop=4 shiftwidth=4
+
+	" Makefileだったらタブ
+	autocmd BufNewFile,BufRead Makefile set filetype=make
+	autocmd FileType make setlocal tabstop=4 softtabstop=4 shiftwidth=4
 augroup END
 
 
