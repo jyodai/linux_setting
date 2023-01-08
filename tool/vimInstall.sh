@@ -1,23 +1,43 @@
 #!/bin/bash
 
-. $HOME/.env
+main() {
+    . $HOME/.env
+    updateVim
+    installPlug
+    setProject
+}
 
-add-apt-repository ppa:jonathonf/vim
-apt update
-apt install vim
-
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-dirPaths=(
-    ".vim/plugged"
-)
-
-for dirPath in "${dirPaths[@]}"
-do
-    if [ ! -d $HOME/"$dirPath" ]; then
-        echo "mkdir : $HOME/$dirPath"
-        mkdir $HOME/"$dirPath"
+updateVim() {
+    version=`vi --version | grep IMproved | grep -oP "[0-9]*\.[0-9]*"`
+    
+    if [ `echo "$version >= 8" | bc` == 1 ]; then
+        echo 'バージョン8.0以上のため更新しません'
+        return
     fi
-done
+    add-apt-repository ppa:jonathonf/vim
+    apt update
+    apt install vim
+}
 
-git clone $VIM_PROJECT $SETTING_PATH/.vim/project
+installPlug() {
+    if [ -d $HOME/".vim/plugged" ]; then
+        echo 'vim-plugはインストール済みです'
+        return
+    fi
+
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+    echo "mkdir : $HOME/.vim/plugged"
+    mkdir $HOME/".vim/plugged"
+}
+
+setProject() {
+    if [ -d $HOME/".vim/project" ]; then
+        echo 'projectはセットアップ済みです'
+        return
+    fi
+
+    git clone $VIM_PROJECT $SETTING_PATH/.vim/project
+}
+
+main
