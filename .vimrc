@@ -47,7 +47,12 @@ Plug 'shun/ddc-vim-lsp'
 
 call plug#end()
 
-source ~/.vim/plugin/*.vim
+:let filelist =  expand("~/.vim/plugin/*.vim")
+:let splitted = split(filelist, "\n")
+:for file in splitted
+    execute 'source' file
+:endfor
+
 
 " fzf settings
 let $FZF_DEFAULT_OPTS="--layout=reverse"
@@ -312,6 +317,9 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""
 
 
-if system('ls ~/.vim/project/') != ''
-    source ~/.vim/project/*.vim
-endif
+:let filelist =  expand("~/.vim/project/*.vim")
+:let splitted = split(filelist, "\n")
+:for file in splitted
+    execute 'source' file
+:endfor
+
