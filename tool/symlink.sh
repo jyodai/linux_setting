@@ -5,6 +5,7 @@ filePaths=(
     ".vimrc"
     ".vim/plugin"
     ".vim/project"
+    ".vim/ftplugin"
     ".screenrc"
     ".gitconfig"
     ".gitconfig.user"
