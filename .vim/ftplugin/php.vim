@@ -14,3 +14,5 @@ inoreabbrev _fore foreach ($t as $v) {<CR><CR>}<C-o>2k<ESC>
 inoreabbrev _sw switch () {<CR>case 0:<CR>break;<CR>}<C-o>4k<ESC>
 
 inoreabbrev _try try {<CR><CR>} catch (Exception $e) {<CR><CR>}<C-o>4k<ESC>
+
+inoreabbrev _llog logger( . "\n", ['file' => __FILE__, 'line' => __LINE__]);<C-o>50h<ESC>
