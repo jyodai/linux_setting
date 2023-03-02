@@ -1,6 +1,6 @@
 inoreabbrev _if if () {<CR><CR>}<C-o>2k<ESC>
-inoreabbrev _eif } elseif () {<CR><C-o>2k<ESC>
-inoreabbrev _ife if () {<CR><CR>} else {<CR><CR>}<C-o>4k<ESC>
+inoreabbrev _elseif } elseif () {<CR><C-o>2k<ESC>
+inoreabbrev _ifelse if () {<CR><CR>} else {<CR><CR>}<C-o>4k<ESC>
 
 inoreabbrev _for for (let i = 0; i < 1; i++) {<CR><CR>}<C-o>2k<ESC>
 
