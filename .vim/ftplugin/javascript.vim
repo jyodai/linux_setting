@@ -1,3 +1,5 @@
+inoreabbrev _func function () {<CR><CR>}<C-o>2k<ESC>
+
 inoreabbrev _if if () {<CR><CR>}<C-o>2k<ESC>
 inoreabbrev _elseif } elseif () {<CR><C-o>2k<ESC>
 inoreabbrev _ifelse if () {<CR><CR>} else {<CR><CR>}<C-o>4k<ESC>
