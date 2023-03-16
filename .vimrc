@@ -181,6 +181,10 @@ inoremap <C-k> <Up>
 inoremap <C-h> <Left>
 inoremap <C-l> <Right>
 
+" ペーストモードの切り替え
+command! Sp set paste
+command! Snp set nopaste
+
 " backSpaceの調整
 set backspace=2
 
