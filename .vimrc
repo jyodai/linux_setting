@@ -291,6 +291,10 @@ augroup vimrc-filetype
 	" Makefileだったらタブ
 	autocmd BufNewFile,BufRead Makefile set filetype=make
 	autocmd FileType make setlocal tabstop=4 softtabstop=4 shiftwidth=4
+
+	" nginxだったらインデント幅が2
+	autocmd BufNewFile,BufRead *nginx*conf set filetype=nginx
+	autocmd FileType nginx setlocal expandtab tabstop=2 softtabstop=2 shiftwidth=2
 augroup END
 
 
