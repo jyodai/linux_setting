@@ -10,6 +10,7 @@ installPackages() {
     packages=(
         "unzip"
         "ripgrep"
+        "jq"
     )
 
     for package in "${packages[@]}"
