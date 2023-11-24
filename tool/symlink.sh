@@ -9,8 +9,13 @@ filePaths=(
     ".screenrc"
     ".gitconfig"
     ".gitconfig.user"
-    ".bash_aliases"
 )
+
+if [ "$SHELL" = "/bin/bash" ]; then
+    filePaths+=(".bash_aliases")
+elif [ "$SHELL" = "/bin/zsh" ]; then
+    filePaths+=(".zsh_aliases")
+fi
 
 main() {
     echo ""
@@ -41,25 +46,42 @@ execSymlink() {
         echo "symlink : $HOME/$filePath"
         ln -s $HOME/linux_setting/"$filePath" $HOME/"$filePath"
 
-        if [ $filePath == '.bash_aliases' ]; then
+        if [ "$SHELL" = "/bin/bash" ] && [ "$filePath" == '.bash_aliases' ]; then
             addBashCode
+        elif [ "$SHELL" = "/bin/zsh" ] && [ "$filePath" == '.zsh_aliases' ]; then
+            addZshCode
         fi
     done
 }
 
 addBashCode() {
-    bashrc=`cat $HOME/.bashrc`
+    bashrc=$(cat $HOME/.bashrc)
     if [[ "$bashrc" == *bash_aliases* ]]; then
         return
     fi
 
-        code="
+    code="
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 "
-    echo "$code" >> $HOME/'.bashrc'
-    source . ~/.bashrc
+    echo "$code" >> $HOME/.bashrc
+    source $HOME/.bashrc
+}
+
+addZshCode() {
+    zshrc=$(cat $HOME/.zshrc)
+    if [[ "$zshrc" == *zsh_aliases* ]]; then
+        return
+    fi
+
+    code="
+if [ -f ~/.zsh_aliases ]; then
+    . ~/.zsh_aliases
+fi
+"
+    echo "$code" >> $HOME/.zshrc
+    source $HOME/.zshrc
 }
 
 execUnlink() {
@@ -75,3 +97,4 @@ execUnlink() {
 }
 
 main $1
+
