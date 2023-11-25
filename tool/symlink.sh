@@ -9,6 +9,7 @@ filePaths=(
     ".screenrc"
     ".gitconfig"
     ".gitconfig.user"
+    ".common_shell_aliases"
 )
 
 if [ "$SHELL" = "/bin/bash" ]; then
