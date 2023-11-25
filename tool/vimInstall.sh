@@ -11,19 +11,24 @@ main() {
 }
 
 updateVim() {
-    version=`vi --version | grep IMproved | grep -oP "[0-9]*\.[0-9]*"`
-    
-    if [ `echo "$version >= 8" | bc` == 1 ]; then
+    version=$(vim --version | grep -Eo "[0-9]+\.[0-9]+" | head -1)
+
+    if [[ $(echo "$version >= 8" | bc) == 1 ]]; then
         echo 'バージョン8.0以上のため更新しません'
         return
     fi
-    add-apt-repository ppa:jonathonf/vim
-    apt update
-    apt install vim
+
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        sudo add-apt-repository ppa:jonathonf/vim
+        sudo apt update
+        sudo apt install vim
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+        brew install vim
+    fi
 }
 
 installPlug() {
-    if [ -d $HOME/".vim/plugged" ]; then
+    if [[ -d $HOME/.vim/plugged ]]; then
         echo 'vim-plugはインストール済みです'
         return
     fi
@@ -31,11 +36,11 @@ installPlug() {
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
     echo "mkdir : $HOME/.vim/plugged"
-    mkdir $HOME/".vim/plugged"
+    mkdir -p $HOME/.vim/plugged
 }
 
 setProject() {
-    if [ -d $HOME/".vim/project" ]; then
+    if [[ -d $HOME/.vim/project ]]; then
         echo 'projectはセットアップ済みです'
         return
     fi
@@ -44,3 +49,4 @@ setProject() {
 }
 
 main
+
