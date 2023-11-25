@@ -302,14 +302,18 @@ augroup END
 """"""""""""" スクリプト """""""""""""""""
 """"""""""""""""""""""""""""""""""""""""""
 
+" ヤンクでクリップボードにコピー
+augroup myYank
+    autocmd!
+    " Windows Subsystem for Linux (WSL)
+    if system('uname -a | grep microsoft') != ''
+        autocmd TextYankPost * :call system('clip.exe', @")
+    " MacOS
+    elseif system('uname') == "Darwin\n"
+        autocmd TextYankPost * :call system('pbcopy', @")
+    endif
+augroup END
 
-" Windows Subsystem for Linux で、ヤンクでクリップボードにコピー
-if system('uname -a | grep microsoft') != ''
-	augroup myYank
-		autocmd!
-		autocmd TextYankPost * :call system('clip.exe', @")
-	augroup END
-endif
 
 " カレントファイルのパスをコピー
 command! Path :call s:Path()
