@@ -14,6 +14,7 @@ bind l windowlist
 hardcopydir /tmp
 
 termcapinfo xterm* ti@:te@
+term "screen-256color"
 hardstatus alwayslastline "%{= kw} %-w%{=bu dr}%n %t%{-}%+w %= %{=b .b}%y/%m/%d %{=b .m}%c:%s"
 
 hardstatus alwayslastline "[%02c:%02s] %n"
