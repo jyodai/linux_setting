@@ -15,23 +15,36 @@ installPackages() {
 
     for package in "${packages[@]}"
     do
-        serch=`dpkg -l | grep $package`
-        if [ -n "$serch" ]; then
-            echo "$package"'はインストール済みです'
+        if isInstalled "$package"; then
+            echo "$package はインストール済みです"
             continue
         fi
 
-
-        echo "$package"'をインストールします'
-        sudo apt install $package -y
+        echo "$package をインストールします"
+        installPackage "$package"
     done
 
     installDeno
 }
 
+isInstalled() {
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        dpkg -l | grep "$1" &> /dev/null
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+        brew list "$1" &> /dev/null
+    fi
+}
+
+installPackage() {
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        sudo apt install "$1" -y
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+        brew install "$1"
+    fi
+}
+
 installDeno() {
-    versionInfo=`deno --version`
-    if [[ ! "$versionInfo" == *not\ found* ]]; then
+    if command -v deno &> /dev/null; then
         echo 'denoはインストール済みです'
         return
     fi
@@ -40,5 +53,5 @@ installDeno() {
     curl -fsSL https://deno.land/x/install/install.sh | sh
 }
 
-
 main
+
