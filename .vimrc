@@ -90,6 +90,8 @@ nnoremap gh :GitGutterLineHighlightsToggle<CR>
 "vim-lsp setting
 " カーソルを当てた時に、下側にエラー内容を出力する
 let g:lsp_diagnostics_echo_cursor = 1
+" コードの近くにエラーメッセージを表示しない
+let g:lsp_diagnostics_virtual_text_enabled = 0
 " 対象箇所の詳細表示
 :command Lpd LspPeekDefinition
 " 対象箇所にジャンプ
@@ -124,7 +126,6 @@ let g:airline#extensions#branch#enabled = 1
 let g:ale_fix_on_save = 0
 " lspの機能は重複するため無効化
 let g:ale_disable_lsp = 1
-let g:ale_disable_lsp = 0
 " コードチェックの感覚が早すぎると重くなる
 let g:ale_lint_delay=3000
 " ファイルを開いた時に実行
@@ -135,6 +136,8 @@ let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_insert_leave = 0
 " ファイルを保存時に実行
 let g:ale_lint_on_save = 1
+" コードの近くにエラーメッセージを表示しない
+let g:ale_virtualtext_cursor = 0
 
 " ale のキーバインド
 :command Af ALEFix
