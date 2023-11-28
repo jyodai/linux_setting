@@ -1,3 +1,5 @@
 source .common_shell_aliases
 
 alias sed='gsed'
+
+export PATH=$HOME/.nodebrew/current/bin:$PATH
