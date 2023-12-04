@@ -330,6 +330,17 @@ function! s:Path()
 endfunction
 
 
+" インサートモードを抜けた時に英数モードに切り替えるための関数
+function! SwitchToEnglishLayout()
+    " im-selectの存在を確認
+    if executable('im-select')
+        call system('im-select com.apple.keylayout.ABC')
+    endif
+endfunction
+
+" インサートモードから抜ける際に関数を呼び出す
+autocmd InsertLeave * call SwitchToEnglishLayout()
+
 """""""""""""""""""""""""""""""""""""""""""""
 """"""""""""" ファイルの読み込み"""""""""""""
 """""""""""""""""""""""""""""""""""""""""""""
