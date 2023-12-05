@@ -1,1 +1,1 @@
-source .common_shell_aliases
+source $HOME/.common_shell_aliases
