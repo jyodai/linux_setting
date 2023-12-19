@@ -147,6 +147,17 @@ let g:ale_virtualtext_cursor = 0
 let g:ale_php_phpcbf_use_global = 1
 let g:ale_php_phpcs_use_global = 1
 
+let g:ale_fixers = {
+\   'sql': [
+\       {
+\           buffer -> {
+\               'command': 'sql-formatter -l mysql'
+\           }
+\       },
+\   ]
+\}
+
+
 " vim-vue setting
 let g:vue_pre_processors = ['vue']
 
