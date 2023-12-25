@@ -16,3 +16,5 @@ alias dirs='dirs -v'
 
 alias hgrep='history | grep'
 alias hrg='history | rg'
+
+alias sshls='cat ~/.ssh/config | grep "Host "'
