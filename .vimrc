@@ -82,10 +82,11 @@ highlight GitGutterDelete ctermfg=red
 nnoremap gp :GitGutterPrevHunk<CR>
 " gnで次の変更箇所へ移動する
 nnoremap gn :GitGutterNextHunk<CR>
-" ghでdiffをハイライトする
-nnoremap gh :GitGutterLineHighlightsToggle<CR>
-" gpでカーソル行のdiffを表示する
-" nnoremap gp :GitGutterPreviewHunk<CR>
+
+:command Gu GitGutterUndoHunk
+:command Gp GitGutterPreviewHunk
+:command Gd GitGutterDiffOrig 
+:command Gf GitGutterFold
 
 "vim-lsp setting
 " カーソルを当てた時に、下側にエラー内容を出力する
