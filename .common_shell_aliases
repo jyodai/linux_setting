@@ -19,7 +19,10 @@ alias hrg='history | rg'
 
 alias sshls='cat ~/.ssh/config | grep "Host "'
 
-function git_ch() {
+alias gits='git status'
+alias gitp='git pull'
+
+function gitch() {
     branch=$1
     git checkout -b $branch origin/$branch
 }
