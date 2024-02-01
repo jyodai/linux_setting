@@ -104,6 +104,8 @@ let g:lsp_diagnostics_highlights_enabled=0
 :command Ld LspDefinition
 " 使用箇所の一覧表示
 :command Lr LspReferences
+:command Lms LspManageServer
+:command Lis LspInstallServer
 
 " spelunker.vim setting
 " 有効化
