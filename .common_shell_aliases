@@ -18,3 +18,8 @@ alias hgrep='history | grep'
 alias hrg='history | rg'
 
 alias sshls='cat ~/.ssh/config | grep "Host "'
+
+function git_ch() {
+    branch=$1
+    git checkout -b $branch origin/$branch
+}
