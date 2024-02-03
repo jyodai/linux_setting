@@ -276,6 +276,7 @@ augroup vimrc-filetype
 
 	" TSだったらインデント幅が2
 	autocmd BufNewFile,BufRead *.ts set filetype=typescript
+	autocmd BufNewFile,BufRead *.tsx set filetype=typescript
 	autocmd FileType typescript setlocal expandtab tabstop=2 softtabstop=2 shiftwidth=2
 
 	" vueだったらインデント幅が2
