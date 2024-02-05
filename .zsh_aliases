@@ -1,5 +1,6 @@
 source $HOME/.common_shell_aliases
 
 alias sed='gsed'
+alias gitb='bash gitb'
 
 export PATH=$HOME/.nodebrew/current/bin:$PATH
