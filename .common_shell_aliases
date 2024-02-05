@@ -1,3 +1,15 @@
+# .evnの読み込み
+SCRIPT_DIR=$(dirname "$0")
+ENV_FILE="${SCRIPT_DIR}/.env"
+if [ -f "${ENV_FILE}" ]; then
+    # .env ファイルが存在する場合、その内容を読み込む
+    export $(cat "${ENV_FILE}" | xargs)
+else
+    # .env ファイルが存在しない場合、エラーメッセージを表示
+    echo ".env file not found in ${SCRIPT_DIR}"
+    exit 1
+fi
+
 # screen
 export SCREENDIR=$HOME/.screen
 
@@ -9,6 +21,9 @@ PATH="$HOME/.composer/vendor/bin:$PATH"
 # denoをパスに追加
 export DENO_INSTALL="$HOME/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
+# linux_setting/binを追加
+PATH="$SETTING_PATH/bin:$PATH"
+
 
 # alias
 alias cd="pushd$1 > /dev/null"
