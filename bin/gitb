@@ -1,0 +1,164 @@
+#!/bin/bash
+
+help () {
+    echo 'u  : プルリクエストをリモートより取得'
+    echo 'd  : ローカルの「feature/*」ブランチ をすべて強制削除'
+    echo 'c  : リモート最新のブランチ10件を取得する'
+    echo 'r  : ローカルブランチをすべて削除後、プルリクエストを更新して最新のブランチを5件取得する'
+}
+
+setPR() {
+    local limit=${1:-30}
+
+    gh pr list --state all --limit "$limit" > /tmp/gh_pr_list_temp
+
+    DIFF=`comm --nocheck-order -12 <(sort /tmp/gh_pr_list_temp) <(sort /tmp/github_pr_list)`
+    if [[ "$DIFF" == "" ]]; then
+        gh pr list --state all --limit 99 > /tmp/github_pr_list
+    else
+        cat /tmp/github_pr_list >> /tmp/gh_pr_list_temp
+        mv /tmp/gh_pr_list_temp /tmp/github_pr_list
+
+        removeDuplicatePR
+    fi
+}
+
+removeDuplicatePR () {
+    awk '!seen[substr($0,1,4)]++' /tmp/github_pr_list > /tmp/github_pr_list.tmp && mv /tmp/github_pr_list.tmp /tmp/github_pr_list
+}
+
+checkout() {
+    setPR
+    switchMain
+    echo
+
+    previous_branch=$(git rev-parse --abbrev-ref HEAD)
+
+    branches=$(\
+        git branch -r --sort=-authordate |\
+        grep -Ev '^(  origin\/)?(develop|master|main)$' |\
+        grep -vE '^  origin\/HEAD' |\
+        head -n 10
+    )
+
+    for branch in $branches; do
+        echo
+        local_branch=$(echo $branch | sed 's#^origin/##')
+        if git show-ref --quiet refs/heads/$local_branch; then
+            echo "branch $local_branch already exists, skipping fetch"
+        else
+            echo "branch $local_branch does not exist, fetching"
+            git checkout -b $local_branch $branch
+        fi
+    done
+
+    git checkout $previous_branch
+}
+
+switchMain() {
+    git checkout main
+    git pull
+}
+
+allDelete() {
+    git branch | grep feature | grep -v '\*' | xargs git branch -D
+}
+
+selectList() {
+    if [[ -e '/tmp/github_pr_list' ]]; then
+        PRS=`cat /tmp/github_pr_list`
+    fi
+
+    echo
+    declare -A branches
+    N=0
+    IFS=$'\n'
+    for B in `git branch`; do
+        BB=${B// /}
+        if [ $N -gt 9 ] && [ $N -lt 123 ]; then
+            NI=$(($N+87))
+            II=`printf "\x$(printf %x $NI)"`
+        else
+            II=$N
+        fi
+        branches["$II"]="$BB"
+        I=$II
+        
+        DESC=''
+        if [[ ! -z "$PRS" ]] && [[ ${BB} =~ (^feature/.+) ]]; then
+            PR_NUM=${BASH_REMATCH[1]}
+            DESC="	"`echo "$PRS" | grep "$PR_NUM" | head -n 1 | cut -f 2,4`
+        fi
+
+        if [[ $DESC = *"MERGED"* ]] || [[ $DESC = *"CLOSED"* ]]; then
+            echo -e "\033[38;5;18m$I: $BB$DESC\033[0m"
+        else
+            echo -e "$I: $BB$DESC"
+        fi
+
+        let N++
+    done
+
+    echo ''
+    read -p 'select #: ' S
+    if [ "$S" == "clean" ]; then
+        git branch | grep feature | grep -v '\*' | xargs git branch -d
+        exit 0;
+    fi
+    if [ "$S" != "" ] && [ "${branches[$S]}" != "" ]; then
+        git checkout ${branches[$S]}
+    fi
+}
+
+while getopts 'ucdrh' OPT
+do
+    case $OPT in
+        "u" ) UPDATE="TRUE" ;;
+        "c" ) CHECKOUT="TRUE" ;;
+        "d" ) ALLDELETE="TRUE" ;;
+        "r" ) RESET="TRUE" ;;
+        "h" ) HELP="TRUE" ;;
+    esac
+done
+
+if [[ ! -z "$UPDATE" ]] && [[ -x `which gh` ]]; then
+    setPR
+fi
+
+if [[ ! -z "$CHECKOUT" ]] && [[ -x `which gh` ]]; then
+    echo 'checkout remote branch to local branch'
+    echo
+    checkout
+    echo
+    echo '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
+fi
+
+if [[ ! -z "$ALLDELETE" ]] && [[ -x `which gh` ]]; then
+    echo
+    allDelete
+    echo
+    echo '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
+fi
+
+if [[ ! -z "$RESET" ]] && [[ -x `which gh` ]]; then
+    allDelete
+    echo
+    echo '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
+
+    setPR
+
+    checkout
+    echo
+    echo '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
+fi
+
+if [[ ! -z "$HELP" ]] && [[ -x `which gh` ]]; then
+    echo
+    help
+    echo
+    exit 0
+fi
+
+selectList
+
+
