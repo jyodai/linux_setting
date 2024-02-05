@@ -90,7 +90,7 @@ selectList() {
         I=$II
         
         DESC=''
-        if [[ ! -z "$PRS" ]] && [[ ${BB} =~ (^feature/.+) ]]; then
+        if [[ ! -z "$PRS" ]] && [[ ${BB} =~ (feature/.+) ]]; then
             PR_NUM=${BASH_REMATCH[1]}
             DESC="    "$(echo "$PRS" | grep "$PR_NUM" | head -n 1 | cut -f 2,4)
         fi
