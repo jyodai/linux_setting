@@ -95,7 +95,9 @@ selectList() {
             DESC="    "$(echo "$PRS" | grep "$PR_NUM" | head -n 1 | cut -f 2,4)
         fi
 
-        if [[ $DESC = *"MERGED"* ]] || [[ $DESC = *"CLOSED"* ]]; then
+        if [[ $BB = \** ]]; then
+            echo -e "\033[38;5;13m$I: $BB$DESC\033[0m"
+        elif [[ $DESC = *"MERGED"* ]] || [[ $DESC = *"CLOSED"* ]]; then
             echo -e "\033[38;5;18m$I: $BB$DESC\033[0m"
         else
             echo -e "$I: $BB$DESC"
