@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# 現在のディレクトリの基底名をプレフィックスとして使用
+PREFIX=$(basename "$(pwd)")
+GITHUB_PR_LIST_TEMP="/tmp/${PREFIX}_gh_pr_list_temp"
+GITHUB_PR_LIST="/tmp/${PREFIX}_github_pr_list"
+
 help () {
     echo 'u  : プルリクエストをリモートより取得'
     echo 'd  : ローカルの「feature/*」ブランチ をすべて強制削除'
@@ -10,21 +15,21 @@ help () {
 setPR() {
     local limit=${1:-30}
 
-    gh pr list --state all --limit "$limit" > /tmp/gh_pr_list_temp
+    gh pr list --state all --limit "$limit" > "$GITHUB_PR_LIST_TEMP"
 
-    DIFF=`comm --nocheck-order -12 <(sort /tmp/gh_pr_list_temp) <(sort /tmp/github_pr_list)`
+    DIFF=$(comm --nocheck-order -12 <(sort "$GITHUB_PR_LIST_TEMP") <(sort "$GITHUB_PR_LIST"))
     if [[ "$DIFF" == "" ]]; then
-        gh pr list --state all --limit 99 > /tmp/github_pr_list
+        gh pr list --state all --limit 99 > "$GITHUB_PR_LIST"
     else
-        cat /tmp/github_pr_list >> /tmp/gh_pr_list_temp
-        mv /tmp/gh_pr_list_temp /tmp/github_pr_list
+        cat "$GITHUB_PR_LIST" >> "$GITHUB_PR_LIST_TEMP"
+        mv "$GITHUB_PR_LIST_TEMP" "$GITHUB_PR_LIST"
 
         removeDuplicatePR
     fi
 }
 
-removeDuplicatePR () {
-    awk '!seen[substr($0,1,4)]++' /tmp/github_pr_list > /tmp/github_pr_list.tmp && mv /tmp/github_pr_list.tmp /tmp/github_pr_list
+removeDuplicatePR() {
+    awk '!seen[substr($0,1,4)]++' "$GITHUB_PR_LIST" > "${GITHUB_PR_LIST}.tmp" && mv "${GITHUB_PR_LIST}.tmp" "$GITHUB_PR_LIST"
 }
 
 checkout() {
@@ -65,19 +70,19 @@ allDelete() {
 }
 
 selectList() {
-    if [[ -e '/tmp/github_pr_list' ]]; then
-        PRS=`cat /tmp/github_pr_list`
+    if [[ -e "$GITHUB_PR_LIST" ]]; then
+        PRS=$(cat "$GITHUB_PR_LIST")
     fi
 
     echo
     declare -A branches
     N=0
     IFS=$'\n'
-    for B in `git branch`; do
+    for B in $(git branch); do
         BB=${B// /}
         if [ $N -gt 9 ] && [ $N -lt 123 ]; then
             NI=$(($N+87))
-            II=`printf "\x$(printf %x $NI)"`
+            II=$(printf "\x$(printf %x $NI)")
         else
             II=$N
         fi
@@ -87,7 +92,7 @@ selectList() {
         DESC=''
         if [[ ! -z "$PRS" ]] && [[ ${BB} =~ (^feature/.+) ]]; then
             PR_NUM=${BASH_REMATCH[1]}
-            DESC="	"`echo "$PRS" | grep "$PR_NUM" | head -n 1 | cut -f 2,4`
+            DESC="    "$(echo "$PRS" | grep "$PR_NUM" | head -n 1 | cut -f 2,4)
         fi
 
         if [[ $DESC = *"MERGED"* ]] || [[ $DESC = *"CLOSED"* ]]; then
@@ -103,62 +108,58 @@ selectList() {
     read -p 'select #: ' S
     if [ "$S" == "clean" ]; then
         git branch | grep feature | grep -v '\*' | xargs git branch -d
-        exit 0;
+        exit 0
     fi
     if [ "$S" != "" ] && [ "${branches[$S]}" != "" ]; then
-        git checkout ${branches[$S]}
+        git checkout "${branches[$S]}"
     fi
 }
 
-while getopts 'ucdrh' OPT
-do
+while getopts 'ucdrh' OPT; do
     case $OPT in
         "u" ) UPDATE="TRUE" ;;
         "c" ) CHECKOUT="TRUE" ;;
         "d" ) ALLDELETE="TRUE" ;;
         "r" ) RESET="TRUE" ;;
         "h" ) HELP="TRUE" ;;
+        * ) help ;;
     esac
 done
 
-if [[ ! -z "$UPDATE" ]] && [[ -x `which gh` ]]; then
+if [[ ! -z "$UPDATE" ]] && [[ -x $(which gh) ]]; then
     setPR
 fi
 
-if [[ ! -z "$CHECKOUT" ]] && [[ -x `which gh` ]]; then
-    echo 'checkout remote branch to local branch'
+if [[ ! -z "$CHECKOUT" ]] && [[ -x $(which gh) ]]; then
+    echo 'Checkout remote branch to local branch'
     echo
     checkout
     echo
     echo '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
 fi
 
-if [[ ! -z "$ALLDELETE" ]] && [[ -x `which gh` ]]; then
+if [[ ! -z "$ALLDELETE" ]] && [[ -x $(which gh) ]]; then
+    echo 'Deleting all local feature/* branches'
     echo
     allDelete
     echo
     echo '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
 fi
 
-if [[ ! -z "$RESET" ]] && [[ -x `which gh` ]]; then
+if [[ ! -z "$RESET" ]] && [[ -x $(which gh) ]]; then
     allDelete
     echo
-    echo '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
-
+    echo 'Resetting and updating pull requests, then checking out latest branches'
+    echo
     setPR
-
     checkout
     echo
     echo '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
 fi
 
-if [[ ! -z "$HELP" ]] && [[ -x `which gh` ]]; then
-    echo
+if [[ ! -z "$HELP" ]] && [[ -x $(which gh) ]]; then
     help
-    echo
     exit 0
 fi
 
 selectList
-
-
