@@ -2,5 +2,6 @@ source $HOME/.common_shell_aliases
 
 alias sed='gsed'
 alias gitb='bash gitb'
+alias gitt='TITLE=$(gh pr view --json title -q '.title') && echo $TITLE && echo $TITLE | pbcopy'
 
 export PATH=$HOME/.nodebrew/current/bin:$PATH
