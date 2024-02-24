@@ -138,51 +138,62 @@ selectList() {
     displayBranches
 }
 
-while getopts 'ucdrh' OPT; do
-    case $OPT in
-        "u" ) UPDATE="TRUE" ;;
-        "c" ) CHECKOUT="TRUE" ;;
-        "d" ) ALLDELETE="TRUE" ;;
-        "r" ) RESET="TRUE" ;;
-        "h" ) HELP="TRUE" ;;
-        * ) help ;;
-    esac
-done
+checkGHCLI() {
+    if ! [[ -x $(which gh) ]]; then
+        echo "GitHub CLI (gh) is not installed or not in PATH."
+        exit 1
+    fi
+}
 
-if [[ ! -z "$UPDATE" ]] && [[ -x $(which gh) ]]; then
+printSeparator() {
+    echo '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
+}
+
+updatePRs() {
     setPR
-fi
+}
 
-if [[ ! -z "$CHECKOUT" ]] && [[ -x $(which gh) ]]; then
+checkoutBranches() {
     echo 'Checkout remote branch to local branch'
     echo
     checkout
-    echo
-    echo '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
-fi
+    printSeparator
+}
 
-if [[ ! -z "$ALLDELETE" ]] && [[ -x $(which gh) ]]; then
+deleteAllFeatureBranches() {
     echo 'Deleting all local feature/* branches'
     echo
     allDelete
-    echo
-    echo '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
-fi
+    printSeparator
+}
 
-if [[ ! -z "$RESET" ]] && [[ -x $(which gh) ]]; then
+resetAndUpdate() {
     allDelete
     echo
     echo 'Resetting and updating pull requests, then checking out latest branches'
     echo
     setPR
     checkout
-    echo
-    echo '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
-fi
+    printSeparator
+}
 
-if [[ ! -z "$HELP" ]] && [[ -x $(which gh) ]]; then
-    help
-    exit 0
-fi
+executeOption() {
+    case $1 in
+        u) updatePRs ;;
+        c) checkoutBranches ;;
+        d) deleteAllFeatureBranches ;;
+        r) resetAndUpdate ;;
+        h) help ; exit 0 ;;
+        *) help ;;
+    esac
+}
 
-selectList
+main() {
+    checkGHCLI
+    while getopts 'ucdrh' OPT; do
+        executeOption $OPT
+    done
+    selectList
+}
+
+main "$@"
