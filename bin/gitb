@@ -71,49 +71,48 @@ allDelete() {
 
 selectList() {
     if [[ -e "$GITHUB_PR_LIST" ]]; then
-        PRS=$(cat "$GITHUB_PR_LIST")
+        pullRequests=$(cat "$GITHUB_PR_LIST")
     fi
 
     echo
-    declare -A branches
-    N=0
+    declare -A branchMap
+    branchIndex=0
     IFS=$'\n'
-    for B in $(git branch); do
-        BB=${B// /}
-        if [ $N -gt 9 ] && [ $N -lt 123 ]; then
-            NI=$(($N+87))
-            II=$(printf "\x$(printf %x $NI)")
-        else
-            II=$N
+    for branch in $(git branch); do
+        trimmedBranch=${branch// /}
+
+        indexChar=$branchIndex
+        if [ $branchIndex -gt 9 ] && [ $branchIndex -lt 123 ]; then
+            asciiOffset=$(($branchIndex+87))
+            indexChar=$(printf "\x$(printf %x $asciiOffset)")
         fi
-        branches["$II"]="$BB"
-        I=$II
-        
-        DESC=''
-        if [[ ! -z "$PRS" ]] && [[ ${BB} =~ (feature/.+) ]]; then
-            PR_NUM=${BASH_REMATCH[1]}
-            DESC="    "$(echo "$PRS" | grep "$PR_NUM" | head -n 1 | cut -f 2,4)
+        branchMap["$indexChar"]="$trimmedBranch"
+
+        description=''
+        if [[ ! -z "$pullRequests" ]] && [[ $trimmedBranch =~ (feature/.+) ]]; then
+            prNumber=${BASH_REMATCH[1]}
+            description="    "$(echo "$pullRequests" | grep "$prNumber" | head -n 1 | cut -f 2,4)
         fi
 
-        if [[ $BB = \** ]]; then
-            echo -e "\033[38;5;13m$I: $BB$DESC\033[0m"
-        elif [[ $DESC = *"MERGED"* ]] || [[ $DESC = *"CLOSED"* ]]; then
-            echo -e "\033[38;5;18m$I: $BB$DESC\033[0m"
+        if [[ $trimmedBranch = \** ]]; then
+            echo -e "\033[38;5;13m$indexChar: $trimmedBranch$description\033[0m"
+        elif [[ $description = *"MERGED"* ]] || [[ $description = *"CLOSED"* ]]; then
+            echo -e "\033[38;5;18m$indexChar: $trimmedBranch$description\033[0m"
         else
-            echo -e "$I: $BB$DESC"
+            echo -e "$indexChar: $trimmedBranch$description"
         fi
 
-        let N++
+        let branchIndex++
     done
 
     echo ''
-    read -p 'select #: ' S
-    if [ "$S" == "clean" ]; then
-        git branch | grep feature | grep -v '\*' | xargs git branch -d
+    read -p 'Select #: ' selection
+    if [ "$selection" == "clean" ]; then
+        git branch | grep 'feature/' | grep -v '\*' | xargs -r git branch -d
         exit 0
     fi
-    if [ "$S" != "" ] && [ "${branches[$S]}" != "" ]; then
-        git checkout "${branches[$S]}"
+    if [ -n "${branchMap[$selection]}" ]; then
+        git checkout "${branchMap[$selection]}"
     fi
 }
 
