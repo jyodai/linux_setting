@@ -102,7 +102,7 @@ displayBranches() {
 
 getPRDescription() {
     local prNumber="$1"
-    echo "    "$(echo "$pullRequests" | grep "$prNumber" | head -n 1 | cut -f 2,4)
+    echo "$pullRequests" | grep "$prNumber" | head -n 1 | cut -f 2,4
 }
 
 printBranch() {
@@ -111,11 +111,11 @@ printBranch() {
     local description="$3"
 
     if [[ $branch = \** ]]; then
-        echo -e "\033[38;5;13m$index: $branch$description\033[0m"
+        echo -e "\033[38;5;13m$index: $branch    $description\033[0m"
     elif [[ $description = *"MERGED"* ]] || [[ $description = *"CLOSED"* ]]; then
-        echo -e "\033[38;5;18m$index: $branch$description\033[0m"
+        echo -e "\033[38;5;18m$index: $branch    $description\033[0m"
     else
-        echo -e "$index: $branch$description"
+        echo -e "$index: $branch    $description"
     fi
 }
 
