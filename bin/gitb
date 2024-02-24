@@ -69,51 +69,74 @@ allDelete() {
     git branch | grep feature | grep -v '\*' | xargs git branch -D
 }
 
-selectList() {
+# 既存のプルリクエストリストを読み込む
+loadPullRequests() {
     if [[ -e "$GITHUB_PR_LIST" ]]; then
         pullRequests=$(cat "$GITHUB_PR_LIST")
+    else
+        pullRequests=""
     fi
+}
 
-    echo
+displayBranches() {
     declare -A branchMap
-    branchIndex=0
-    IFS=$'\n'
+    local branchIndex=0
+    local IFS=$'\n'
     for branch in $(git branch); do
-        trimmedBranch=${branch// /}
+        local trimmedBranch=${branch// /}
+        branchMap[$branchIndex]="$trimmedBranch"
 
-        indexChar=$branchIndex
-        if [ $branchIndex -gt 9 ] && [ $branchIndex -lt 123 ]; then
-            asciiOffset=$(($branchIndex+87))
-            indexChar=$(printf "\x$(printf %x $asciiOffset)")
-        fi
-        branchMap["$indexChar"]="$trimmedBranch"
-
-        description=''
-        if [[ ! -z "$pullRequests" ]] && [[ $trimmedBranch =~ (feature/.+) ]]; then
-            prNumber=${BASH_REMATCH[1]}
-            description="    "$(echo "$pullRequests" | grep "$prNumber" | head -n 1 | cut -f 2,4)
+        local description=''
+        if [[ $trimmedBranch =~ (feature/.+) ]]; then
+            local prNumber=${BASH_REMATCH[1]}
+            description=$(getPRDescription "$prNumber")
         fi
 
-        if [[ $trimmedBranch = \** ]]; then
-            echo -e "\033[38;5;13m$indexChar: $trimmedBranch$description\033[0m"
-        elif [[ $description = *"MERGED"* ]] || [[ $description = *"CLOSED"* ]]; then
-            echo -e "\033[38;5;18m$indexChar: $trimmedBranch$description\033[0m"
-        else
-            echo -e "$indexChar: $trimmedBranch$description"
-        fi
-
-        let branchIndex++
+        printBranch "$branchIndex" "$trimmedBranch" "$description"
+        ((branchIndex++))
     done
 
     echo ''
     read -p 'Select #: ' selection
-    if [ "$selection" == "clean" ]; then
+    processSelection "$selection" branchMap
+}
+
+getPRDescription() {
+    local prNumber="$1"
+    echo "    "$(echo "$pullRequests" | grep "$prNumber" | head -n 1 | cut -f 2,4)
+}
+
+printBranch() {
+    local index="$1"
+    local branch="$2"
+    local description="$3"
+
+    if [[ $branch = \** ]]; then
+        echo -e "\033[38;5;13m$index: $branch$description\033[0m"
+    elif [[ $description = *"MERGED"* ]] || [[ $description = *"CLOSED"* ]]; then
+        echo -e "\033[38;5;18m$index: $branch$description\033[0m"
+    else
+        echo -e "$index: $branch$description"
+    fi
+}
+
+processSelection() {
+    local selection="$1"
+    declare -n map="$2"
+
+    if [[ $selection == "clean" ]]; then
         git branch | grep 'feature/' | grep -v '\*' | xargs -r git branch -d
         exit 0
+    elif [[ -n "${map[$selection]}" ]]; then
+        git checkout "${map[$selection]}"
+    else
+        echo "Invalid selection."
     fi
-    if [ -n "${branchMap[$selection]}" ]; then
-        git checkout "${branchMap[$selection]}"
-    fi
+}
+
+selectList() {
+    loadPullRequests
+    displayBranches
 }
 
 while getopts 'ucdrh' OPT; do
