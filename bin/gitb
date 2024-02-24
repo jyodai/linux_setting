@@ -69,7 +69,6 @@ allDelete() {
     git branch | grep feature | grep -v '\*' | xargs git branch -D
 }
 
-# 既存のプルリクエストリストを読み込む
 loadPullRequests() {
     if [[ -e "$GITHUB_PR_LIST" ]]; then
         pullRequests=$(cat "$GITHUB_PR_LIST")
