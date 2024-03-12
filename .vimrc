@@ -45,6 +45,8 @@ Plug 'Shougo/ddc-sorter_rank'
 
 Plug 'shun/ddc-vim-lsp'
 
+Plug 'alvan/vim-closetag'
+
 call plug#end()
 
 :let filelist =  expand("~/.vim/plugin/*.vim")
@@ -168,6 +170,9 @@ let g:ale_fixers = {
 
 " vim-vue setting
 let g:vue_pre_processors = ['vue']
+
+" vim-closetag setting"
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.tsx,*.vue,*.jsx,*.blade.php'
 
 """"""""""""""""""""""""""""""""""""""
 """"""""""""" 基本の設定 """""""""""""
