@@ -36,6 +36,8 @@ alias sshls='cat ~/.ssh/config | grep "Host "'
 
 alias gits='git status'
 alias gitp='git pull'
+alias gitco='git commit'
+alias gitdi='git difftool'
 
 function gitch() {
     branch=$1
