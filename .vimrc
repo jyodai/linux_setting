@@ -280,9 +280,9 @@ augroup vimrc-filetype
 	autocmd FileType javascript setlocal expandtab tabstop=2 softtabstop=2 shiftwidth=2
 
 	" TSだったらインデント幅が2
-	autocmd BufNewFile,BufRead *.ts set filetype=typescript
-	autocmd BufNewFile,BufRead *.tsx set filetype=typescript
-	autocmd FileType typescript setlocal expandtab tabstop=2 softtabstop=2 shiftwidth=2
+	autocmd BufNewFile,BufRead *.ts set filetype=typescriptreact
+	autocmd BufNewFile,BufRead *.tsx set filetype=typescriptreact
+	autocmd FileType typescriptreact setlocal expandtab tabstop=2 softtabstop=2 shiftwidth=2
 
 	" vueだったらインデント幅が2
 	autocmd BufNewFile,BufRead *.vue set filetype=vue
