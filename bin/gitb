@@ -15,11 +15,11 @@ help () {
 setPR() {
     local limit=${1:-30}
 
-    gh pr list --state all --limit "$limit" > "$GITHUB_PR_LIST_TEMP"
+    gh pr list --state open --limit "$limit" > "$GITHUB_PR_LIST_TEMP"
 
     DIFF=$(comm --nocheck-order -12 <(sort "$GITHUB_PR_LIST_TEMP") <(sort "$GITHUB_PR_LIST"))
     if [[ "$DIFF" == "" ]]; then
-        gh pr list --state all --limit 99 > "$GITHUB_PR_LIST"
+        gh pr list --state open --limit 99 > "$GITHUB_PR_LIST"
     else
         cat "$GITHUB_PR_LIST" >> "$GITHUB_PR_LIST_TEMP"
         mv "$GITHUB_PR_LIST_TEMP" "$GITHUB_PR_LIST"
