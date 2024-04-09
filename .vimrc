@@ -47,6 +47,8 @@ Plug 'shun/ddc-vim-lsp'
 
 Plug 'alvan/vim-closetag'
 
+Plug 'github/copilot.vim'
+
 call plug#end()
 
 :let filelist =  expand("~/.vim/plugin/*.vim")
