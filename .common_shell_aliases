@@ -39,6 +39,8 @@ alias gitp='git pull'
 alias gitco='git commit'
 alias gitdi='git difftool'
 
+alias vf='vifm ./'
+
 function gitch() {
     branch=$1
     git checkout -b $branch origin/$branch
