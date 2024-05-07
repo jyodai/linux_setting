@@ -41,6 +41,8 @@ alias gitdi='git difftool'
 
 alias vf='vifm ./'
 
+alias vfz='vim $(fzf)'
+
 function gitch() {
     branch=$1
     git checkout -b $branch origin/$branch
