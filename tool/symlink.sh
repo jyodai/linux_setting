@@ -6,7 +6,7 @@ filePaths=(
     ".vim/plugin"
     ".vim/project"
     ".vim/ftplugin"
-    ".vifm"
+    ".vifm/vifmrc"
     ".screenrc"
     ".gitconfig"
     ".gitconfig.user"
@@ -34,19 +34,26 @@ main() {
 execSymlink() {
     for filePath in "${filePaths[@]}"
     do
-        if [ -L $HOME/"$filePath" ]; then
+        # 先にリンク先ディレクトリの存在を確認し、存在しない場合は作成する
+        linkDir=$(dirname "$HOME/$filePath")
+        if [ ! -d "$linkDir" ]; then
+            mkdir -p "$linkDir"
+            echo "created directory: $linkDir"
+        fi
+
+        if [ -L "$HOME/$filePath" ]; then
             echo "link already exists : $HOME/$filePath"
             continue
         fi
 
-        if [ -f $HOME/"$filePath" ]; then
-            backupName=$HOME/"$filePath"'_bk'`date +%Y%m%d`
-            mv $HOME/"$filePath" $backupName
+        if [ -f "$HOME/$filePath" ]; then
+            backupName="$HOME/${filePath}_bk$(date +%Y%m%d)"
+            mv "$HOME/$filePath" "$backupName"
             echo "backup : $backupName"
         fi
 
         echo "symlink : $HOME/$filePath"
-        ln -s $HOME/linux_setting/"$filePath" $HOME/"$filePath"
+        ln -s "$HOME/linux_setting/$filePath" "$HOME/$filePath"
 
         if [ "$SHELL" = "/bin/bash" ] && [ "$filePath" == '.bash_aliases' ]; then
             addBashCode
