@@ -148,8 +148,8 @@ command! make !!make %a
 command! mkcd :mkdir %a | cd %a
 command! reload :write | restart full
 
-:com imv mv %f %D
-:com icp cp %f %D
+:com mv mv %f %D
+:com cp cp %f %D
 
 " ------------------------------------------------------------------------------
 " File types association
