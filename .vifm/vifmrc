@@ -106,6 +106,7 @@ set statusline="  %t  [%T]%= %A %10u:%-7g %15s %20d [%a free]"
 " List of color schemes to try (picks the first one supported by the terminal)
 colorscheme Default-256 Default
 
+set number
 " ------------------------------------------------------------------------------
 " Bookmarks
 " ------------------------------------------------------------------------------
