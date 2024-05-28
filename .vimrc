@@ -57,6 +57,12 @@ call plug#end()
     execute 'source' file
 :endfor
 
+" 次の提案に移動
+nmap <silent> <C-]> <Plug>(copilot-next)
+
+" 前の提案に移動
+nmap <silent> <F7> <Plug>(copilot-previous)
+
 
 " fzf settings
 let $FZF_DEFAULT_OPTS="--layout=reverse"
