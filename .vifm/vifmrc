@@ -106,7 +106,11 @@ set statusline="  %t  [%T]%= %A %10u:%-7g %15s %20d [%a free]"
 " List of color schemes to try (picks the first one supported by the terminal)
 colorscheme Default-256 Default
 
+" set line number "
 set number
+
+" show hiddden files in both panes "
+windo normal zo
 " ------------------------------------------------------------------------------
 " Bookmarks
 " ------------------------------------------------------------------------------
@@ -143,6 +147,9 @@ command! run !! ./%f
 command! make !!make %a
 command! mkcd :mkdir %a | cd %a
 command! reload :write | restart full
+
+:com imv mv %f %D
+:com icp cp %f %D
 
 " ------------------------------------------------------------------------------
 " File types association
@@ -424,7 +431,9 @@ nnoremap <a-i> :sync<cr>
 " Open directory under cursor in the other pane
 nnoremap <a-o> :sync %c<cr>
 " Swap panes
-nnoremap <c-u> <c-w>x
+"nnoremap <c-u> <c-w>x
+
+nnoremap t t<down>
 
 " ------------------------------------------------------------------------------
 " Various customization examples
