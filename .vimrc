@@ -117,10 +117,16 @@ let g:lsp_diagnostics_highlights_enabled=0
 :command Lpd LspPeekDefinition
 " 対象箇所にジャンプ
 :command Ld LspDefinition
+" 定義箇所の情報を表示
+:command Lh LspHover
 " 使用箇所の一覧表示
 :command Lr LspReferences
+
 :command Lms LspManageServer
 :command Lis LspInstallServer
+
+" 言語サーバーのステータスを表示する
+:command Ls LspStatus
 
 " spelunker.vim setting
 " 有効化
