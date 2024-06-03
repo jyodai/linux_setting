@@ -77,7 +77,12 @@ nnoremap <silent> <leader>g :GFiles<CR>
 nnoremap <silent> <leader>G :GFiles?<CR>
 nnoremap <silent> <leader>b :Buffers<CR>
 nnoremap <silent> <leader>h :History<CR>
+nnoremap <silent> <leader>j :Jumps<CR>
+nnoremap <silent> <leader>w :Windows<CR>
+nnoremap <silent> <leader>l :Lines<CR>
 nnoremap <silent> <leader>r :Rg<CR>
+nnoremap <silent> <leader>c :BCommits<CR>
+nnoremap <silent> <leader>C :Commits<CR>
 
 " vim-gitgutter settings
 set signcolumn=yes
