@@ -142,13 +142,13 @@ colorscheme codedark
 
 " vim-airline setting
 " 表示する値の設定
-let g:airline#extensions#default#layout = [['a', 'b', 'c'], ['x', 'y', 'z']]
+let g:airline#extensions#default#layout = [['', 'b', 'c'], ['x', 'y', 'z']]
 " タブラインを表示
 let g:airline#extensions#tabline#enabled = 1
 " テーマを設定
 let g:airline_theme = 'wombat'
 " ブランチを表示
-let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#branch#enabled = 0
 
 " ale setting
 "ファイル保存時に整形実行
@@ -371,6 +371,7 @@ function! s:Path()
 	let @+ = expand('%:h') . "/" . expand('%:t')
 	let @" = expand('%:h') . "/" . expand('%:t')
 	call system('clip.exe', @")
+    echo @"
 endfunction
 
 
