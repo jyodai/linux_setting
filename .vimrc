@@ -195,6 +195,12 @@ let g:vue_pre_processors = ['vue']
 " vim-closetag setting"
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.tsx,*.vue,*.jsx,*.blade.php'
 
+" AndrewRadev/splitjoin.vim setting
+" ,s で現在の構造を分割
+nnoremap ,s :SplitjoinSplit<CR>
+" ,j で現在の構造を結合
+nnoremap ,j :SplitjoinJoin<CR>
+
 """"""""""""""""""""""""""""""""""""""
 """"""""""""" 基本の設定 """""""""""""
 """"""""""""""""""""""""""""""""""""""
