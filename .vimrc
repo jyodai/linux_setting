@@ -49,6 +49,8 @@ Plug 'alvan/vim-closetag'
 
 Plug 'github/copilot.vim'
 
+Plug 'AndrewRadev/splitjoin.vim'
+
 call plug#end()
 
 :let filelist =  expand("~/.vim/plugin/*.vim")
