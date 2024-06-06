@@ -146,6 +146,7 @@ command! zip zip -r %c.zip %f
 command! run !! ./%f
 command! make !!make %a
 command! mkcd :mkdir %a | cd %a
+command! mp :!mkdir -p "%a"
 command! reload :write | restart full
 
 :com mv mv %f %D
