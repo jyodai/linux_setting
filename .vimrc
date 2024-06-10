@@ -105,6 +105,9 @@ nnoremap gn :GitGutterNextHunk<CR>
 :command Gd GitGutterDiffOrig 
 :command Gf GitGutterFold
 
+" tpope/vim-fugitive
+:command Gb Git blame
+
 "vim-lsp setting
 " カーソルを当てた時に、下側にエラー内容を出力する
 let g:lsp_diagnostics_echo_cursor = 1
