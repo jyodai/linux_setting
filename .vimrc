@@ -130,6 +130,8 @@ let g:lsp_diagnostics_highlights_enabled=0
 :command Lms LspManageServer
 :command Lis LspInstallServer
 
+:command Ldd LspDocumentDiagnostics
+
 " 言語サーバーのステータスを表示する
 :command Ls LspStatus
 
