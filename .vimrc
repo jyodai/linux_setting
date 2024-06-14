@@ -272,7 +272,9 @@ nnoremap <silent> <C-j> :bprev<CR>
 nnoremap <silent> <c-k> :bnext<CR>
 
 " バッファを閉じた時にウィンドウは開いたままにする
-cnoremap bd b#\|bd#
+cnoremap bd b#\|bd#<CR>
+" 現在アクティブなバッファ以外を閉じる
+cnoremap bc :let curr=bufnr('%')<Bar>bufdo if bufnr('%') != curr \| bwipeout \| endif<Bar>execute 'buffer' curr<CR>
 
 "文字コード
 set enc=utf-8
