@@ -111,11 +111,13 @@ nnoremap gn :GitGutterNextHunk<CR>
 "vim-lsp setting
 " カーソルを当てた時に、下側にエラー内容を出力する
 let g:lsp_diagnostics_echo_cursor = 1
+" カーソルを当てたときにフローティングウィンドウでエラー内容を表示
+let g:lsp_diagnostics_float_cursor = 1
 " コードの近くにエラーメッセージを表示しない
 let g:lsp_diagnostics_virtual_text_enabled = 0
 " エラー箇所の行の横にマークを出力
 let g:lsp_diagnostics_signs_enabled=1
-let g:lsp_diagnostics_signs_delay=200
+let g:lsp_diagnostics_signs_delay=500
 " エラー箇所のコードを強調しない
 let g:lsp_diagnostics_highlights_enabled=0
 " 対象箇所の詳細表示
@@ -134,6 +136,28 @@ let g:lsp_diagnostics_highlights_enabled=0
 
 " 言語サーバーのステータスを表示する
 :command Ls LspStatus
+
+" カーソル位置のLSPテキストをコピーする
+command! Lc call LddAndCopyFirstMatchingText()
+function! LddAndCopyFirstMatchingText()
+  let current_line = line('.')
+
+  execute 'Ldd'
+
+  let pattern = '\v.*\|' . current_line . '.*'
+  let matching_line = search(pattern, 'nw')
+
+  if matching_line != 0
+    let line_text = getline(matching_line)
+    call setreg('+', line_text)
+    echo "Copied matching text to clipboard"
+    echo line_text
+    execute 'q'
+  else
+    echo "Text not found in output"
+    execute
+  endif
+endfunction
 
 " spelunker.vim setting
 " 有効化
