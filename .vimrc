@@ -115,7 +115,7 @@ let g:lsp_diagnostics_echo_cursor = 1
 let g:lsp_diagnostics_virtual_text_enabled = 0
 " エラー箇所の行の横にマークを出力
 let g:lsp_diagnostics_signs_enabled=1
-let g:lsp_diagnostics_signs_delay=50
+let g:lsp_diagnostics_signs_delay=200
 " エラー箇所のコードを強調しない
 let g:lsp_diagnostics_highlights_enabled=0
 " 対象箇所の詳細表示
