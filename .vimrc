@@ -386,6 +386,9 @@ augroup vimrc-filetype
 	autocmd FileType nginx setlocal expandtab tabstop=2 softtabstop=2 shiftwidth=2
 augroup END
 
+" .env.*ファイルをシェルスクリプトとして認識させる
+autocmd BufRead,BufNewFile .env.* set filetype=sh
+
 
 """"""""""""""""""""""""""""""""""""""""""
 """"""""""""" スクリプト """""""""""""""""
