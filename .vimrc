@@ -51,6 +51,8 @@ Plug 'github/copilot.vim'
 
 Plug 'AndrewRadev/splitjoin.vim'
 
+Plug 'junegunn/vim-easy-align'
+
 call plug#end()
 
 :let filelist =  expand("~/.vim/plugin/*.vim")
@@ -229,6 +231,14 @@ let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.tsx,*.vue,*.jsx,*.blade.php
 nnoremap ,s :SplitjoinSplit<CR>
 " ,j で現在の構造を結合
 nnoremap ,j :SplitjoinJoin<CR>
+
+" vim-easy-align setting
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
 
 """"""""""""""""""""""""""""""""""""""
 """"""""""""" 基本の設定 """""""""""""
