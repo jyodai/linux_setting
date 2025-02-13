@@ -187,6 +187,18 @@ require("lazy").setup({
       vim.api.nvim_set_keymap("n", "ga", "<Plug>(EasyAlign)", { noremap = false })
     end
   },
+
+  -- ステータスラインの設定
+  {
+    "vim-airline/vim-airline",
+    dependencies = { "vim-airline/vim-airline-themes" },
+    config = function()
+      vim.g["airline#extensions#default#layout"] = {{ "", "b", "c" }, { "x", "y", "z" }}
+      vim.g["airline#extensions#tabline#enabled"] = 1
+      vim.g["airline_theme"] = "wombat"
+      vim.g["airline#extensions#branch#enabled"] = 0
+    end,
+  },
 })
 
 
