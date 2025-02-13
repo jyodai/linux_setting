@@ -130,7 +130,8 @@ require("lazy").setup({
           ['<CR>'] = cmp.mapping.confirm({ select = true }), -- 選択して確定
         },
         sources = {
-          { name = 'nvim_lsp' },  -- LSPから補完候補を取得
+          { name = "copilot" },    -- Copilotから補完候補を取得
+          { name = 'nvim_lsp' },   -- LSPから補完候補を取得
           { name = 'luasnip' },    -- スニペットから補完
           { name = 'buffer' },     -- バッファ内の補完
           { name = 'path' },       -- ファイルパス補完
@@ -199,6 +200,26 @@ require("lazy").setup({
       vim.g["airline#extensions#branch#enabled"] = 0
     end,
   },
+
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup({
+        suggestion = { enabled = false },  -- 競合を防ぐために無効化（後で cmp と連携）
+        panel = { enabled = false },
+      })
+    end,
+  },
+  {
+    "zbirenbaum/copilot-cmp",
+    dependencies = { "zbirenbaum/copilot.lua" },
+    config = function()
+      require("copilot_cmp").setup()
+    end,
+  },
+
 })
 
 
