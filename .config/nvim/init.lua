@@ -382,6 +382,11 @@ augroup vimrc-filetype
   " nginxだったらインデント幅が2
   autocmd BufNewFile,BufRead *nginx*conf set filetype=nginx
   autocmd FileType nginx setlocal expandtab tabstop=2 softtabstop=2 shiftwidth=2
+
+  " luaだったらインデント幅が2
+  autocmd BufNewFile,BufRead *.lua set filetype=lua
+  autocmd FileType lua setlocal expandtab tabstop=2 softtabstop=2 shiftwidth=2
+
 augroup END
 ]])
 
