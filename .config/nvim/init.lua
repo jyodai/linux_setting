@@ -212,6 +212,8 @@ require("lazy").setup({
       })
     end,
   },
+
+  -- nvim-cmpと連携するために必要
   {
     "zbirenbaum/copilot-cmp",
     dependencies = { "zbirenbaum/copilot.lua" },
@@ -219,6 +221,24 @@ require("lazy").setup({
       require("copilot_cmp").setup()
     end,
   },
+
+  {
+    "dense-analysis/ale",
+    config = function()
+      -- Pintでのフォーマット設定
+      vim.g.ale_php_pint_executable = "laravel/vendor/bin/pint"
+      vim.g.ale_fixers = {
+        php = {"pint"},
+      }
+      vim.g.ale_linters = {
+        php = {"phpstan"},
+      }
+      vim.g.ale_php_pint_options = '--config laravel/pint.json' 
+  
+      -- 保存時にフォーマット
+      vim.g.ale_fix_on_save = 1
+    end,
+  }
 
 })
 
@@ -441,9 +461,9 @@ vim.api.nvim_create_autocmd('InsertLeave', {
 -- """""""""""""""""""""""""""""""""""""""""""""
 
 -- プロジェクト内の*.vimファイルを読み込む
-local filelist = vim.fn.glob('~/.vim/project/*.vim', false, true)
-for _, file in ipairs(filelist) do
-  vim.cmd('source ' .. vim.fn.fnameescape(file))
-end
+-- local filelist = vim.fn.glob('~/.vim/project/*.vim', false, true)
+-- for _, file in ipairs(filelist) do
+--   vim.cmd('source ' .. vim.fn.fnameescape(file))
+-- end
 
 
