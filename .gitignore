@@ -2,3 +2,5 @@
 .gitconfig.user
 *.swp
 .vim/project
+.config/nvim/project
+.DS_Store

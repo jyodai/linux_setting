@@ -229,23 +229,6 @@ require("lazy").setup({
   {
     "dense-analysis/ale",
     config = function()
-      vim.g.ale_linters = {
-        php = {"phpstan"},
-        typescriptreact = {'eslint'},
-      }
-
-      vim.g.ale_fixers = {
-        php = {"pint"},
-        typescriptreact = {'prettier', 'eslint'},
-      }
-
-      vim.g.ale_php_pint_executable = vim.fn.getcwd() .. "/laravel/vendor/bin/pint"
-      vim.g.ale_php_pint_options = '--config '.. vim.fn.getcwd() .. '/laravel/pint.json' 
-
-      vim.g.ale_typescriptreact_prettier_options = '--config ' .. vim.fn.getcwd() .. '/next/.prettierrc'
-      vim.g.ale_typescriptreact_prettier_options = '--config ' .. vim.fn.getcwd() .. '/next/.eslintrc.json'
-
-  
       -- 保存時にフォーマット
       vim.g.ale_fix_on_save = 1
     end,
@@ -472,9 +455,9 @@ vim.api.nvim_create_autocmd('InsertLeave', {
 -- """""""""""""""""""""""""""""""""""""""""""""
 
 -- プロジェクト内の*.vimファイルを読み込む
--- local filelist = vim.fn.glob('~/.vim/project/*.vim', false, true)
--- for _, file in ipairs(filelist) do
---   vim.cmd('source ' .. vim.fn.fnameescape(file))
--- end
+local filelist = vim.fn.glob('~/.config/nvim/project/*.lua', false, true)
+for _, file in ipairs(filelist) do
+  vim.cmd('source ' .. vim.fn.fnameescape(file))
+end
 
 

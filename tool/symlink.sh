@@ -12,6 +12,7 @@ filePaths=(
     ".gitconfig.user"
     ".common_shell_aliases"
     ".config/nvim/init.lua"
+    ".config/nvim/project"
 )
 
 if [ "$SHELL" = "/bin/bash" ]; then
