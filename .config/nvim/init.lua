@@ -173,6 +173,8 @@ require("lazy").setup({
           ['<C-Space>'] = cmp.mapping.complete(),      -- 補完開始
           ['<C-e>'] = cmp.mapping.close(),             -- 補完を閉じる
           ['<CR>'] = cmp.mapping.confirm({ select = true }), -- 選択して確定
+          ['<C-y>'] = cmp.mapping.confirm({ select = true }), -- Ctrl + yで確定
+          ['<Esc>'] = cmp.mapping.abort(),             -- Escで選択を取りやめ
         },
         sources = {
           { name = "copilot" },    -- Copilotから補完候補を取得
