@@ -13,6 +13,7 @@ setup :
 	sh ./tool/symlink.sh
 	sh ./tool/packageInstall.sh
 	sh ./tool/vimInstall.sh
+	sh ./tool/nvimInstall.sh
 
 symlink :
 	sh ./tool/symlink.sh
