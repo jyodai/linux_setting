@@ -91,6 +91,25 @@ require("lazy").setup({
         capabilities = capabilities,
       }
 
+      -- 診断結果の表示設定
+      vim.diagnostic.config({
+        virtual_text = {
+          prefix = '●', -- 虚像テキストのプレフィックスを変更
+          spacing = 4,  -- コードからのスペース
+        },
+        float = {                 -- 浮動ウィンドウとして表示
+            border = "rounded",
+            severity_sort = true,
+        },
+        signs = true,             -- サインを表示
+        update_in_insert = false, -- 挿入モード中に更新しない
+      })
+
+      -- 行の直下に診断結果を表示するための設定
+      vim.cmd [[
+        autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
+      ]]
+
       -- LSPのコマンド設定
       vim.api.nvim_create_user_command("Lpd", function() vim.lsp.buf.definition() end, {})
       vim.api.nvim_create_user_command("Ld", function() vim.lsp.buf.definition() end, {})
@@ -100,6 +119,28 @@ require("lazy").setup({
       vim.api.nvim_create_user_command("Lms", function() vim.lsp.buf.manage_servers() end, {})
       vim.api.nvim_create_user_command("Lis", function() vim.lsp.buf.install_server() end, {})
       vim.api.nvim_create_user_command("Ldd", function() vim.lsp.buf.document_diagnostics() end, {})
+
+
+      -- エラー内容をクリップボードにコピーする関数
+      function CopyDiagnosticToClipboard()
+        local line = vim.fn.line('.') - 1  -- 現在のカーソル行を取得（0-indexed）
+        local diagnostics = vim.diagnostic.get(0, {lnum = line}) -- カーソル位置のエラーのみ取得
+        if #diagnostics > 0 then
+          local diagnostic_message = ""
+          for _, diag in ipairs(diagnostics) do
+            diagnostic_message = diagnostic_message .. diag.message .. "\n"
+          end
+          -- クリップボードにコピー
+          vim.fn.setreg("+", diagnostic_message)
+          print("診断結果をクリップボードにコピーしました")
+        else
+          print("カーソル位置に診断結果はありません")
+        end
+      end
+
+      -- 診断結果をクリップボードにコピー
+      vim.api.nvim_create_user_command('Lc', CopyDiagnosticToClipboard, {})
+
     end,
   },
 
