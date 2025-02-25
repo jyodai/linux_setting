@@ -273,7 +273,9 @@ require("lazy").setup({
       -- 保存時にフォーマット
       vim.g.ale_fix_on_save = 1
     end,
-  }
+  },
+
+  { 'tomtom/tcomment_vim' },
 
 })
 
