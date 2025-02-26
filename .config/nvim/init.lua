@@ -503,14 +503,30 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
--- カレントファイルのパスをコピー
-function _G.copy_current_file_path()
+
+-- 相対パスをコピーする関数
+function _G.copy_relative_file_path()
+  -- '%:.' は作業ディレクトリからの相対パスを取得する
+  local file_path = vim.fn.expand('%:.')
+  vim.fn.setreg('+', file_path)
+  vim.fn.setreg('"', file_path)
+  print(file_path)
+end
+-- :Path コマンドで相対パスをコピー
+vim.api.nvim_create_user_command('Path', _G.copy_relative_file_path, {})
+
+
+-- 絶対パスをコピーする関数
+function _G.copy_absolute_file_path()
+  -- '%:p' は絶対パスを取得する
   local file_path = vim.fn.expand('%:p')
   vim.fn.setreg('+', file_path)
   vim.fn.setreg('"', file_path)
   print(file_path)
 end
-vim.api.nvim_create_user_command('Path', copy_current_file_path, {})
+-- :Patha コマンドで絶対パスをコピー
+vim.api.nvim_create_user_command('Patha', _G.copy_absolute_file_path, {})
+
 
 -- インサートモードを抜けた時に英数モードに切り替える
 function _G.switch_to_english_layout()
