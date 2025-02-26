@@ -290,7 +290,7 @@ require("lazy").setup({
           enable = true,  -- シンタックスハイライト
         },
         indent = {
-          enable = false,  -- インデント
+          enable = true,  -- インデント
         },
       }
     end,
