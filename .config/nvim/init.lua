@@ -279,6 +279,37 @@ require("lazy").setup({
 
   { 'tomtom/tcomment_vim' },
 
+  {
+    'nvim-treesitter/nvim-treesitter',
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    build = ':TSUpdate',  -- パーサーをインストール
+    config = function()
+      require'nvim-treesitter.configs'.setup {
+        ensure_installed = "all",
+        highlight = {
+          enable = true,  -- シンタックスハイライト
+        },
+        indent = {
+          enable = false,  -- インデント
+        },
+      }
+    end,
+  },
+
+  -- 内部のパース処理で nvim-treesitter/nvim-treesitter を使用
+  {
+    'Wansmer/treesj',
+    keys = {
+      { ',s', '<Cmd>TSJSplit<CR>', desc = 'Split lines' },
+      { ',j', '<Cmd>TSJJoin<CR>',  desc = 'Join lines' },
+      { ',m', '<Cmd>TSJToggle<CR>', desc = 'Toggle Split/Join' },
+    },
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    config = function()
+      require('treesj').setup({})
+    end,
+  }
+
 })
 
 
