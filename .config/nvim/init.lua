@@ -160,6 +160,10 @@ require("lazy").setup({
 
       -- cmpの設定
       cmp.setup({
+        completion = {
+          completeopt = 'menu,menuone',
+          max_item_count = 10,  -- 候補数制限
+        },
         snippet = {
           expand = function(args)
             require('luasnip').lsp_expand(args.body)  -- LuaSnipのスニペット展開
