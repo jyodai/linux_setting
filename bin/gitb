@@ -6,10 +6,12 @@ GITHUB_PR_LIST_TEMP="/tmp/${PREFIX}_gh_pr_list_temp"
 GITHUB_PR_LIST="/tmp/${PREFIX}_github_pr_list"
 
 help () {
-    echo 'u  : プルリクエストをリモートより取得'
-    echo 'd  : ローカルの「feature/*」ブランチ をすべて強制削除'
-    echo 'c  : リモート最新のブランチ10件を取得する'
-    echo 'r  : ローカルブランチをすべて削除後、プルリクエストを更新して最新のブランチを5件取得する'
+    echo 'u       : プルリクエストをリモートより取得'
+    echo 'd       : ローカルの「feature/*」ブランチ をすべて強制削除'
+    echo 'c       : リモート最新のブランチ10件を取得する'
+    echo 'r       : ローカルブランチをすべて削除後、プルリクエストを更新して最新のブランチを5件取得する'
+    echo 'h       : Git履歴から過去のブランチを表示し、選択可能にする'
+    echo '-- help : ヘルプを表示'
 }
 
 setPR() {
@@ -177,23 +179,70 @@ resetAndUpdate() {
     printSeparator
 }
 
+displayHistory() {
+    # 'git reflog'の中で'checkout'操作のみをフィルタリングし、'from'と'to'のブランチ名を抽出
+    local history=$(git reflog -n 20 --date=short | grep 'checkout' | head -n 10 | sed -E 's/.*from ([^ ]*) to ([^ ]*).*/\2/')
+    local index=0
+    local branchList=()
+
+    # 履歴をリストに格納し、表示する
+    while read -r branch; do
+        if [[ -n "$branch" ]]; then
+            branchList+=("$branch")
+            echo "$index: $branch"
+            ((index++))
+        fi
+    done <<< "$history"
+
+    echo ''
+    read -p 'Select history #: ' selection
+    if [[ $selection =~ ^[0-9]+$ && $selection -ge 0 && $selection -lt ${#branchList[@]} ]]; then
+        local branchName="${branchList[$selection]}"
+
+        # 空でないブランチ名かどうか確認
+        if [[ -z "$branchName" ]]; then
+            echo "Error: Selected branch name is empty."
+            return
+        fi
+
+        currentBranch=$(git rev-parse --abbrev-ref HEAD)
+
+        # 現在のブランチと選択されたブランチが異なる場合のみ切り替え
+        if [[ "$branchName" != "$currentBranch" ]]; then
+            echo "Switching to branch '$branchName'..."
+            git checkout "$branchName"
+        else
+            echo "Already on branch '$branchName'. No switch needed."
+        fi
+    else
+        echo "Invalid selection."
+    fi
+}
+
 executeOption() {
     case $1 in
         u) updatePRs ;;
         c) checkoutBranches ;;
         d) deleteAllFeatureBranches ;;
         r) resetAndUpdate ;;
-        h) help ; exit 0 ;;
-        *) help ;;
+        h) displayHistory ; exit 0 ;;
     esac
 }
 
 main() {
     checkGHCLI
+
+    if [[ "$1" == "--help" ]]; then
+        help
+        exit 0
+    fi
+
     while getopts 'ucdrh' OPT; do
         executeOption $OPT
     done
+
     selectList
 }
 
 main "$@"
+
