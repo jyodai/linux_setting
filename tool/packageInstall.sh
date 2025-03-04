@@ -25,6 +25,7 @@ installPackages() {
     done
 
     installDeno
+    installGo
 }
 
 isInstalled() {
@@ -51,6 +52,20 @@ installDeno() {
 
     echo 'denoをインストールします'
     curl -fsSL https://deno.land/x/install/install.sh | sh
+}
+
+installGo() {
+    if command -v go &> /dev/null; then
+        echo 'Goはインストール済みです'
+        return
+    fi
+
+    echo 'Goをインストールします'
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        sudo apt install golang -y
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+        brew install go
+    fi
 }
 
 main

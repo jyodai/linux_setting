@@ -62,6 +62,10 @@ require("lazy").setup({
   },
   { "junegunn/fzf.vim" },
 
+  -- LSPのsqlsを使用するために必要
+  -- 入力補完以外に、コマンドが使用可能になる
+  { "nanotee/sqls.nvim" },
+
   -- nvim-lspconfigのインストール
   {
     "neovim/nvim-lspconfig",
@@ -76,7 +80,11 @@ require("lazy").setup({
       -- mason設定
       require("mason").setup()
       require("mason-lspconfig").setup {
-        ensure_installed = { "intelephense", "ts_ls" }
+        ensure_installed = {
+          "intelephense",
+          "ts_ls",
+          "sqls", -- 事前にgoをインストールしておく必要がある
+        }
       }
 
       -- LSP設定
@@ -90,6 +98,33 @@ require("lazy").setup({
       lspconfig.ts_ls.setup {
         capabilities = capabilities,
       }
+
+      lspconfig.sqls.setup {
+        -- nanotee/sqls.nvimを読み込み
+        on_attach = function(client, bufnr)
+          require('sqls').on_attach(client, bufnr)
+        end,
+
+        capbilities = capabilities,
+        settings = {
+          sqls = {
+            -- ~/.config/sqls/config.ymlを作成して定義可能
+            connections = {
+              -- {
+              --   driver = 'mysql',
+              --   dataSourceName = 'username:password@tcp(127.0.0.1:3306)/dbname',
+              -- },
+            },
+          },
+        },
+      }
+
+      -- SQLクエリを実行するためのキー設定
+      vim.api.nvim_create_user_command('Sqe', 'SqlsExecuteQuery', {})
+      vim.api.nvim_create_user_command('Sqev', 'SqlsExecuteQueryVertical', {})
+      vim.api.nvim_set_keymap('v', '<leader>r', '<Plug>(sqls-execute-query)', { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('v', '<leader>R', '<Plug>(sqls-execute-query-vertical)', { noremap = true, silent = true })
+
 
       -- 診断結果の表示設定
       vim.diagnostic.config({
@@ -500,6 +535,23 @@ vim.opt.shiftwidth = 4
 
 -- 旧式の正規表現を使用
 vim.opt.re = 0
+
+
+-- プレビューウィンドウの設定
+-- 分割方向を常に下にする
+vim.opt.splitbelow = true
+
+-- プレビューウィンドウの高さを動的に1/2にする関数
+local function set_preview_height()
+  local lines = vim.o.lines
+  local height = math.floor(lines / 2)
+  vim.opt.previewheight = height
+end
+
+-- ファイルやバッファが開かれるたびにプレビューウィンドウの高さを再設定
+vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
+  callback = set_preview_height,
+})
 
 
 -- """"""""""""""""""""""""""""""""""""""""""
