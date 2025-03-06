@@ -197,7 +197,6 @@ require("lazy").setup({
       cmp.setup({
         completion = {
           completeopt = 'menu,menuone',
-          max_item_count = 10,  -- 候補数制限
         },
         snippet = {
           expand = function(args)
@@ -211,16 +210,19 @@ require("lazy").setup({
           ['<C-f>'] = cmp.mapping.scroll_docs(4),      -- ドキュメントスクロール
           ['<C-Space>'] = cmp.mapping.complete(),      -- 補完開始
           ['<C-e>'] = cmp.mapping.close(),             -- 補完を閉じる
-          ['<CR>'] = cmp.mapping.confirm({ select = true }), -- 選択して確定
+          ['<CR>'] = cmp.mapping.confirm({ select = true }),  -- 選択して確定
           ['<C-y>'] = cmp.mapping.confirm({ select = true }), -- Ctrl + yで確定
           ['<Esc>'] = cmp.mapping.abort(),             -- Escで選択を取りやめ
+          ['<CR>'] = cmp.mapping(function(fallback)    -- Enterで選択しない
+            fallback()
+          end, { "i", "s" }),
         },
         sources = {
-          { name = "copilot" },    -- Copilotから補完候補を取得
-          { name = 'nvim_lsp' },   -- LSPから補完候補を取得
-          { name = 'luasnip' },    -- スニペットから補完
-          { name = 'buffer' },     -- バッファ内の補完
-          { name = 'path' },       -- ファイルパス補完
+          { name = "copilot" },                       -- Copilotから補完候補を取得
+          { name = 'nvim_lsp', max_item_count = 5 },  -- LSPから補完候補を取得
+          { name = 'luasnip' , max_item_count = 3 },  -- スニペットから補完
+          { name = 'buffer'  , max_item_count = 3 },  -- バッファ内の補完
+          { name = 'path'    , max_item_count = 3 },  -- ファイルパス補完
         },
       })
     end,
