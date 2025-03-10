@@ -84,6 +84,7 @@ require("lazy").setup({
           "intelephense",
           "ts_ls",
           "sqls", -- 事前にgoをインストールしておく必要がある
+          "lua_ls",
         }
       }
 
@@ -118,6 +119,17 @@ require("lazy").setup({
           },
         },
       }
+
+      lspconfig.lua_ls.setup{
+        settings = {
+          Lua = {
+            diagnostics = {
+              globals = { "vim" },
+            },
+          },
+        },
+      }
+
 
       -- SQLクエリを実行するためのキー設定
       vim.api.nvim_create_user_command('Sqe', 'SqlsExecuteQuery', {})
@@ -241,7 +253,7 @@ require("lazy").setup({
       -- gitgutter設定
       vim.o.signcolumn = "yes"
       vim.o.updatetime = 250
-      
+
       -- GitGutter関連のハイライト設定
       vim.cmd("highlight clear SignColumn")
       vim.cmd("highlight GitGutterAdd ctermfg=green")
@@ -514,7 +526,26 @@ vim.api.nvim_set_keymap('n', '<C-k>', ':bnext<CR>', { noremap = true, silent = t
 vim.api.nvim_set_keymap('c', 'bd', 'b#|bd#<CR>', { noremap = true, silent = true })
 
 -- 現在アクティブなバッファ以外を閉じる
-vim.api.nvim_set_keymap('c', 'bc', 'let curr=bufnr("%")<Bar>bufdo if bufnr("%") ~= curr | bwipeout | endif<Bar>execute "buffer" curr<CR>', { noremap = true, silent = true })
+vim.api.nvim_create_user_command("Bc", function()
+  CloseOtherBuffers()
+end, {})
+
+function CloseOtherBuffers()
+  local curr = vim.api.nvim_get_current_buf()
+  local bufs = vim.api.nvim_list_bufs()
+
+  -- 現在のバッファ以外を削除
+  for _, buf in ipairs(bufs) do
+    if buf ~= curr and vim.api.nvim_buf_is_loaded(buf) then
+      vim.api.nvim_buf_delete(buf, { force = true })
+    end
+  end
+
+  -- タブの更新
+  vim.cmd("redrawtabline")
+  vim.cmd("tabnext")
+end
+
 
 -- 文字コード
 vim.opt.encoding = 'utf-8'
