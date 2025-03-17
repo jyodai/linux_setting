@@ -38,6 +38,7 @@ alias gits='git status'
 alias gitp='git pull'
 alias gitco='git commit'
 alias gitdi='git difftool'
+alias gitl='git log -n 3'
 
 alias vf='vifm ./'
 
