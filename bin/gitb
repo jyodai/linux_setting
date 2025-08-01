@@ -2,8 +2,13 @@
 
 # 現在のディレクトリの基底名をプレフィックスとして使用
 PREFIX=$(basename "$(pwd)")
-GITHUB_PR_LIST_TEMP="/tmp/${PREFIX}_gh_pr_list_temp"
-GITHUB_PR_LIST="/tmp/${PREFIX}_github_pr_list"
+# 永続的なデータ保存用のディレクトリを設定
+DATA_DIR="$HOME/.local/share/${PREFIX}_git_helper"
+GITHUB_PR_LIST_TEMP="${DATA_DIR}/gh_pr_list_temp"
+GITHUB_PR_LIST="${DATA_DIR}/github_pr_list"
+
+# データ保存ディレクトリが存在しない場合は作成
+mkdir -p "$DATA_DIR"
 
 help () {
     echo 'u       : プルリクエストをリモートより取得'
@@ -43,8 +48,8 @@ checkout() {
 
     branches=$(\
         git branch -r --sort=-authordate |\
-        grep -Ev '^(  origin\/)?(develop|master|main)$' |\
-        grep -vE '^  origin\/HEAD' |\
+        grep -Ev '^(  origin/)?(develop|master|main)$' |\
+        grep -vE '^  origin/HEAD' |\
         head -n 10
     )
 
@@ -245,4 +250,3 @@ main() {
 }
 
 main "$@"
-
