@@ -185,6 +185,8 @@ resetAndUpdate() {
 }
 
 displayHistory() {
+    loadPullRequests
+    
     # 'git reflog'の中で'checkout'操作のみをフィルタリングし、'from'と'to'のブランチ名を抽出
     local history=$(git reflog -n 20 --date=short | grep 'checkout' | head -n 10 | sed -E 's/.*from ([^ ]*) to ([^ ]*).*/\2/')
     local index=0
@@ -194,7 +196,14 @@ displayHistory() {
     while read -r branch; do
         if [[ -n "$branch" ]]; then
             branchList+=("$branch")
-            echo "$index: $branch"
+            
+            local description=''
+            if [[ $branch =~ (feature/.+) ]]; then
+                local prNumber=${BASH_REMATCH[1]}
+                description=$(getPRDescription "$prNumber")
+            fi
+            
+            echo "$index: $branch    $description"
             ((index++))
         fi
     done <<< "$history"
