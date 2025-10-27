@@ -48,5 +48,21 @@ alias vi='nvim'
 
 function gitch() {
     branch=$1
-    git checkout -b $branch origin/$branch
+
+    git fetch
+
+    # ローカルブランチの存在確認
+    if git rev-parse --verify "$branch" >/dev/null 2>&1; then
+      echo "Switching to existing branch '$branch'"
+      git switch "$branch"
+    else
+      # リモートブランチの存在確認
+      if git ls-remote --exit-code origin "refs/heads/$branch" >/dev/null 2>&1; then
+        echo "Creating and switching to new branch '$branch' from origin/$branch"
+        git switch -c "$branch" --track "origin/$branch"
+      else
+        echo "Error: Remote branch 'origin/$branch' does not exist"
+        return 1
+      fi
+    fi
 }
