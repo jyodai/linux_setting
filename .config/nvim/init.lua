@@ -393,8 +393,18 @@ require("lazy").setup({
     build = "make tiktoken", -- MacOS/Linuxの場合のみ
     config = function ()
       require("CopilotChat").setup {
-        model = "claude-3.7-sonnet-thought",
-        system_prompt = "回答は日本語で提供してください。",
+        model = "claude-sonnet-4",
+        system_prompt = [[
+あなたは優秀なアシスタントです。
+回答は日本語で提供してください。
+Copilotが出力するコードは、常にマークダウン記法でコードブロックとして囲んでください。例えば、PHPコードの場合は以下のようにします。
+
+```PHP
+echo ("Hello, world!")
+```
+
+プレーンテキストの場合でも、コードの一部であればバッククォート1つで囲んでください。例: `echo ("Hello, world!")`
+        ]],
         show_help = "yes",
         prompts = {
             -- :Copi Review で呼び出す
