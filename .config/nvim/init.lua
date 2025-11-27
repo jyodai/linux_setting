@@ -85,6 +85,7 @@ require("lazy").setup({
           "ts_ls",
           "sqls", -- 事前にgoをインストールしておく必要がある
           "lua_ls",
+          "terraformls"
         }
       }
 
