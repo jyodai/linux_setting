@@ -337,6 +337,11 @@ require("lazy").setup({
     config = function()
       -- 保存時にフォーマット
       vim.g.ale_fix_on_save = 1
+
+      vim.g.ale_fixers = {
+        terraform = { "terraform" },
+      }
+
     end,
   },
 
