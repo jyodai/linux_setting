@@ -131,6 +131,15 @@ require("lazy").setup({
         },
       }
 
+      -- Masonでインストールした terraform-ls のパス
+      local terraform_ls_cmd = vim.fn.stdpath("data") .. "/mason/bin/terraform-ls"
+
+      lspconfig.terraformls.setup {
+          cmd = { terraform_ls_cmd, "serve" },  -- Mason のバイナリを指定
+          capabilities = capabilities,
+          filetypes = { "terraform", "hcl" },
+          root_dir = lspconfig.util.root_pattern(".terraform", ".git"),
+      }
 
       -- SQLクエリを実行するためのキー設定
       vim.api.nvim_create_user_command('Sqe', 'SqlsExecuteQuery', {})
@@ -394,7 +403,7 @@ require("lazy").setup({
     build = "make tiktoken", -- MacOS/Linuxの場合のみ
     config = function ()
       require("CopilotChat").setup {
-        model = "claude-sonnet-4",
+        model = "gpt-5.1-codex",
         system_prompt = [[
 あなたは優秀なアシスタントです。
 回答は日本語で提供してください。
