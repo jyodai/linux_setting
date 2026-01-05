@@ -340,6 +340,7 @@ require("lazy").setup({
 
       vim.g.ale_fixers = {
         terraform = { "terraform" },
+        jsonnet = { "jsonnetfmt" },
       }
 
     end,
@@ -643,6 +644,10 @@ augroup vimrc-filetype
   " luaだったらインデント幅が2
   autocmd BufNewFile,BufRead *.lua set filetype=lua
   autocmd FileType lua setlocal expandtab tabstop=2 softtabstop=2 shiftwidth=2
+
+  " jsonnetだったらインデント幅が2 (.libsonnetも含む)
+  autocmd BufNewFile,BufRead *.jsonnet,*.libsonnet set filetype=jsonnet
+  autocmd FileType jsonnet setlocal expandtab tabstop=2 softtabstop=2 shiftwidth=2
 
 augroup END
 ]])
