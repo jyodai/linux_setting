@@ -5,3 +5,5 @@ alias gitb='bash gitb'
 alias gitt='TITLE=$(gh pr view --json title -q '.title') && echo $TITLE && echo $TITLE | pbcopy'
 
 export PATH=$HOME/.nodebrew/current/bin:$PATH
+
+eval "$(direnv hook zsh)"
