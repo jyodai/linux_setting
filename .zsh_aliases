@@ -6,4 +6,30 @@ alias gitt='TITLE=$(gh pr view --json title -q '.title') && echo $TITLE && echo 
 
 export PATH=$HOME/.nodebrew/current/bin:$PATH
 
+# direnvをシェルコマンド実行時に自動で読み込む設定
 eval "$(direnv hook zsh)"
+
+########## ########## ########## ########## ##########
+########## コマンド履歴に関する設定         ##########
+########## ########## ########## ########## ##########
+
+# his と入力することで history からfzfで選択して実行可能
+his() {
+  local cmd
+  # 履歴からコマンドを選択
+  cmd=$(history -n 1 | fzf --tac --no-sort --query="$*")
+
+  if [[ -n "$cmd" ]]; then
+    # eval "$cmd" を削除し、以下の行に変更します
+    print -z "$cmd"
+  fi
+}
+
+HISTFILE=~/.zsh_history
+HISTSIZE=1000000   # メモリ上の保存件数を増やす
+SAVEHIST=1000000   # ファイルへの保存件数を増やす
+
+# 重複を記録しない、空白から始まるコマンドを記録しないなどの便利設定
+setopt hist_ignore_dups     # 直前と同じコマンドは記録しない
+setopt share_history        # 別のウィンドウで実行したコマンドも共有する
+setopt append_history       # 上書きではなく追記する
