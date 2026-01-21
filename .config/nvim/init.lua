@@ -409,7 +409,7 @@ require("lazy").setup({
     build = "make tiktoken", -- MacOS/Linuxの場合のみ
     config = function ()
       require("CopilotChat").setup {
-        model = "gpt-5.1-codex",
+        model = "gpt-5-mini",
         system_prompt = [[
 あなたは優秀なアシスタントです。
 回答は日本語で提供してください。
