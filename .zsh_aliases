@@ -9,6 +9,9 @@ export PATH=$HOME/.nodebrew/current/bin:$PATH
 # direnvをシェルコマンド実行時に自動で読み込む設定
 eval "$(direnv hook zsh)"
 
+# zoxide
+eval "$(zoxide init zsh)"
+
 ########## ########## ########## ########## ##########
 ########## コマンド履歴に関する設定         ##########
 ########## ########## ########## ########## ##########
