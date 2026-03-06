@@ -73,7 +73,7 @@ switchMain() {
 }
 
 allDelete() {
-    git branch | grep feature | grep -v '\*' | xargs git branch -D
+    git checkout main && git branch | grep -v '\*' | xargs git branch -D
 }
 
 loadPullRequests() {
