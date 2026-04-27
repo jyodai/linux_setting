@@ -13,6 +13,10 @@ eval "$(direnv hook zsh)"
 eval "$(zoxide init zsh)"
 eval "$(zoxide init zsh --cmd cd)"
 
+# 1Password CLI とデスクトップアプリの統合（Touch ID連携）
+# 設定しないとCLI上でパスワード入力が求められ、認証が通らない
+export OP_BIOMETRIC_UNLOCK_ENABLED=true
+
 ########## ########## ########## ########## ##########
 ########## コマンド履歴に関する設定         ##########
 ########## ########## ########## ########## ##########
