@@ -72,8 +72,44 @@ switchMain() {
     git pull
 }
 
+# main以外のローカルブランチを削除する。stashがあるブランチやmainにマージ未済のブランチは確認を求める。
 allDelete() {
-    git checkout main && git branch | grep -v '\*' | xargs git branch -D
+    git checkout main || return 1
+
+    local branches
+    branches=$(git branch | grep -v '\*' | sed 's/^[[:space:]]*//')
+
+    if [[ -z "$branches" ]]; then
+        echo "削除するブランチがありません。"
+        return 0
+    fi
+
+    while IFS= read -r branch; do
+        [[ -z "$branch" ]] && continue
+        local reasons=()
+
+        if git stash list 2>/dev/null | grep -q " on ${branch}:"; then
+            reasons+=("stashあり")
+        fi
+
+        if ! git merge-base --is-ancestor "$branch" main 2>/dev/null; then
+            reasons+=("mainにマージ未済")
+        fi
+
+        if [[ ${#reasons[@]} -gt 0 ]]; then
+            local reason_str
+            reason_str=$(IFS=', '; echo "${reasons[*]}")
+            # done <<< "$branches" のヒアストリングがループ全体の stdin を上書きするため </dev/tty を明示
+            read -p "ブランチ '$branch' は ${reason_str} です。削除しますか? [y/N]: " confirm </dev/tty
+            if [[ "$confirm" =~ ^[Yy]$ ]]; then
+                git branch -D "$branch"
+            else
+                echo "ブランチ '$branch' をスキップしました。"
+            fi
+        else
+            git branch -D "$branch"
+        fi
+    done <<< "$branches"
 }
 
 loadPullRequests() {
