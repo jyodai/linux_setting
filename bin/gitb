@@ -46,14 +46,10 @@ checkout() {
 
     previous_branch=$(git rev-parse --abbrev-ref HEAD)
 
-    # mainにマージ済みのリモートブランチ一覧を取得
-    merged=$(git branch -r --merged main | sed 's/^ *//')
-
     branches=$(\
         git branch -r --sort=-authordate |\
         grep -Ev '^(  origin/)?(develop|master|main)$' |\
         grep -vE '^  origin/HEAD' |\
-        grep -vFf <(echo "$merged") |\  # マージ済みブランチを除外
         head -n 10
     )
 
